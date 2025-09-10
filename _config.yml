@@ -1,0 +1,6 @@
+title: 音楽理論勉強会_第18回
+theme: minima
+markdown: kramdown
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
