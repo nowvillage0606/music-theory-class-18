@@ -8,7 +8,7 @@ permissions:
   pages: write
   id-token: write
 concurrency:
-  group: "pages"
+  group: "pages-${{ github.ref }}"
   cancel-in-progress: true
 jobs:
   build:
@@ -30,3 +30,6 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+        with: 
+         # PRのときはプレビュー、本番pushのときは通常デプロイ
+          preview: ${{ github.event_name == 'pull_request' }}
