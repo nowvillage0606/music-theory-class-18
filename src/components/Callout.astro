@@ -1,0 +1,14 @@
+---
+const { tone = "info", title = "" } = Astro.props;
+const tones = {
+  info: "bg-blue-50 border-blue-200 text-slate-800",
+  warn: "bg-amber-50 border-amber-200 text-slate-800",
+  tip:  "bg-emerald-50 border-emerald-200 text-slate-800",
+};
+---
+<div class={`rounded-2xl border p-5 ${tones[tone]}`}>
+  {title && <p class="font-semibold mb-1">{title}</p>}
+  <div class="prose prose-slate">
+    <slot />
+  </div>
+</div>
