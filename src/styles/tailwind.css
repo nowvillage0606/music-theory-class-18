@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 読みやすさの底上げ */
+.prose { @apply leading-relaxed; }
+.prose :where(h2){ @apply mt-14 border-b pb-2; }
+.prose :where(h3){ @apply mt-10; }
+
+/* リンク */
+.prose a { @apply text-blue-600 no-underline hover:underline; }
+
+/* 引用や <details> をカードっぽく */
+.prose blockquote{ @apply bg-slate-50 border-l-4 border-slate-300 p-4 not-italic; }
+details{ @apply bg-slate-50 border rounded-lg p-4 my-4; }
+summary{ @apply cursor-pointer font-medium; }
+
+/* 見出しのオフセット（固定ヘッダ想定） */
+:target{ scroll-margin-top: 96px; }
