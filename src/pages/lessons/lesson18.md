@@ -1,4 +1,5 @@
 ---
+layout: ../../layouts/LessonLayout.astro
 title: "第18回 | 曲の『雰囲気』大分解"
 date: "2025-09-12"
 summary: "雰囲気＝パラメータの束。既存曲から要素を観測→再構成できるように、授業用Webページ向けに整形したノート。"
