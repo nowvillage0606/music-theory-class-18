@@ -1,0 +1,21 @@
+---
+const steps = ["観測", "記録", "設計"];
+const icons = ["hearing", "edit", "construction"];
+---
+<svg viewBox="0 0 900 160" class="w-full h-auto">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 z" fill="#94a3b8" />
+    </marker>
+  </defs>
+  {steps.map((label, i) => (
+    <>
+      <rect x={40 + i*300} y="30" rx="14" ry="14" width="220" height="100" fill="#f1f5f9" stroke="#cbd5e1"/>
+      <text x={80 + i*300} y="86" font-size="28" fill="#0f172a">{label}</text>
+      <text x={52 + i*300} y="70" font-size="20" fill="#334155"></text> {/* placeholder */}
+      {i < 2 && (
+        <line x1={260 + i*300} y1="80" x2={300 + i*300} y2="80" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+      )}
+    </>
+  ))}
+</svg>
