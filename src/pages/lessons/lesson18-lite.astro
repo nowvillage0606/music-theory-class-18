@@ -3,6 +3,9 @@ import "../../styles/tailwind.css";
 import SlideSection from "../../components/SlideSection.astro";
 import Stat from "../../components/Stat.astro";
 import Callout from "../../components/Callout.astro";
+import FlowDiagram from "../../components/FlowDiagram.astro";
+import CanvasGrid from "../../components/CanvasGrid.astro";
+
 
 const page = {
   title: "第18回｜曲の『雰囲気』大分解（要点版）",
@@ -11,10 +14,25 @@ const page = {
 ---
 <html lang="ja">
   <head>
+    <header class="bg-animated text-white">
     <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>{page.title}</title>
+    <style>
+        .ms { font-family: 'Material Symbols Outlined'; font-weight: 400; font-style: normal;
+        font-size: 1.25em; line-height: 1; vertical-align: -2px; }
+        .bg-animated {
+          background: linear-gradient(-45deg, #0f172a, #1e293b, #334155, #0f172a);
+          background-size: 400% 400%;
+          animation: gradientFlow 20s ease infinite;
+        }
+        @keyframes gradientFlow {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+    </style>
   </head>
-  <body class="bg-white text-slate-900">
+  <body class="bg-animated text-white">
     <!-- HERO -->
     <header class="border-b bg-gradient-to-b from-slate-50 to-white">
       <div class="mx-auto max-w-5xl px-4 py-12">
@@ -38,7 +56,7 @@ const page = {
     </header>
 
     <!-- 1. 目的 -->
-    <SlideSection id="goal" eyebrow="Purpose" title="ゴール" lead="形容詞で語らず、数値・語彙・手順で雰囲気を再現できる状態に。">
+    <SlideSection id="goal" eyebrow="Purpose" title="ゴール" icon="flag" tone="emerald" lead="形容詞で語らず、数値・語彙・手順で雰囲気を再現できる状態に。">
       <div class="grid md:grid-cols-3 gap-4">
         <Callout tone="tip" title="観測">
           <ul><li>耳で仮説→BPM/拍子/キック配置/プリディレイ</li><li>M/Sで広がりと距離感を推定</li></ul>
@@ -52,8 +70,10 @@ const page = {
       </div>
     </SlideSection>
 
+    <FlowDiagram />
+
     <!-- 2. フレーム -->
-    <SlideSection id="frame" eyebrow="Framework" title="雰囲気分解フレーム">
+    <SlideSection id="frame" eyebrow="Framework" title="雰囲気分解フレーム" icon="view_quilt" tone="blue">
       <div class="grid md:grid-cols-2 gap-6">
         <div>
           <h3 class="font-semibold mb-2">要素カテゴリ（8）</h3>
@@ -79,8 +99,10 @@ const page = {
       </div>
     </SlideSection>
 
+    <CanvasGrid />
+
     <!-- 3. デモ手順（ワークフロー） -->
-    <SlideSection id="flow" eyebrow="Workflow" title="実践の流れ（5分版）" lead="小さく当てて、外れたら1変数ずつ戻す。">
+    <SlideSection id="flow" eyebrow="Workflow" title="実践の流れ（5分版）" icon="bolt" tone="amber" lead="小さく当てて、外れたら1変数ずつ戻す。">
       <ol class="list-decimal pl-6 space-y-2">
         <li>BPM/拍子を合わせる → シャッフル度を当てる</li>
         <li>キック配置とスネア位置を仮置き（Dembow/4つ打ち等）</li>
@@ -91,7 +113,7 @@ const page = {
     </SlideSection>
 
     <!-- 4. チェックリスト（配布） -->
-    <SlideSection id="worksheet" eyebrow="Handout" title="配布：雰囲気分解ワークシート">
+    <SlideSection id="worksheet" eyebrow="Handout" title="配布：雰囲気分解ワークシート" icon="description" tone="slate">
       <p class="text-slate-600">授業内で配布するチェックリスト。コピーして使ってください。</p>
       <pre class="mt-4 rounded-2xl border bg-slate-50 p-4 overflow-x-auto text-sm">
 # 雰囲気分解ワークシート
@@ -110,14 +132,14 @@ Presence比 ____ / Air比 ____
     </SlideSection>
 
     <!-- 5. FAQ（折りたたみ） -->
-    <SlideSection id="faq" eyebrow="FAQ" title="よくある質問">
+    <SlideSection id="faq" eyebrow="FAQ" title="よくある質問" icon="help" tone="rose">
       <details class="mb-3"><summary>空間系は既存曲から読み取りづらくない？</summary><div class="mt-2">耳→M/S観測→クレストで3手当て。プリディレイ＝距離、Side量＝広さ、テイルの粒で種類。</div></details>
       <details class="mb-3"><summary>歌が浮く時の最短修正は？</summary><div class="mt-2">3k前後のプレゼンスとプリディレイを原曲寄りに。</div></details>
       <details><summary>“切ない”雰囲気の初期値は？</summary><div class="mt-2">シャッフル浅め＋短いプリディレイ＋上棚-3〜6dB。</div></details>
     </SlideSection>
 
     <footer class="py-10 text-center text-sm text-slate-500 border-t">
-      © {new Date().getFullYear()} Music Planz
+      © {new Date().getFullYear()} NoViLholic
     </footer>
   </body>
 </html>
