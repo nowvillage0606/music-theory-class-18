@@ -40,6 +40,8 @@ tags: ["music-theory","groove","timbre","mixing","vocal","analysis"]
 **テーマ：曲の「雰囲気」を分解→再構成する。**  
 オカルトではなく**パラメータの束**として捉え、耳→メモ→DAWで手を動かす型を身につける。
 
+[▶ 要点版（LPスタイル）へ](/music-theory-class-18/lessons/lesson18-lite.html)
+
 **アジェンダ**
 - インターバルのお時間
 - 曲の「雰囲気」を構成する要素
