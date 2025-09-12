@@ -3,6 +3,9 @@ import "../../styles/tailwind.css";
 import SlideSection from "../../components/SlideSection.astro";
 import Stat from "../../components/Stat.astro";
 import Callout from "../../components/Callout.astro";
+import FlowDiagram from "../../components/FlowDiagram.astro";
+import CanvasGrid from "../../components/CanvasGrid.astro";
+
 
 const page = {
   title: "第18回｜曲の『雰囲気』大分解（要点版）",
@@ -66,6 +69,8 @@ const page = {
       </div>
     </SlideSection>
 
+    <FlowDiagram />
+
     <!-- 2. フレーム -->
     <SlideSection id="frame" eyebrow="Framework" title="雰囲気分解フレーム" icon="view_quilt" tone="blue">
       <div class="grid md:grid-cols-2 gap-6">
@@ -92,6 +97,8 @@ const page = {
         </div>
       </div>
     </SlideSection>
+
+    <CanvasGrid />
 
     <!-- 3. デモ手順（ワークフロー） -->
     <SlideSection id="flow" eyebrow="Workflow" title="実践の流れ（5分版）" icon="bolt" tone="amber" lead="小さく当てて、外れたら1変数ずつ戻す。">
