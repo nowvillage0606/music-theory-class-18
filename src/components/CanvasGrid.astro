@@ -1,0 +1,13 @@
+<svg viewBox="0 0 800 420" class="w-full h-auto">
+  <rect x="10" y="10" width="780" height="400" rx="14" fill="#ffffff" stroke="#cbd5e1"/>
+  <!-- 2列×4段のグリッド -->
+  {Array.from({length:4}).map((_, r) => (
+    Array.from({length:2}).map((_, c) => (
+      <rect x={30 + c*380} y={30 + r*95} width="360" height="80" fill="#f8fafc" stroke="#e2e8f0"/>
+    ))
+  ))}
+  <!-- タイトル -->
+  {["時間軸","ピッチ","音色","空間","ダイナミクス","ミックス","声質","歌詞"].map((t, i) => (
+    <text x={40 + (i%2)*380} y={55 + Math.floor(i/2)*95} font-size="14" fill="#334155">{t}</text>
+  ))}
+</svg>
