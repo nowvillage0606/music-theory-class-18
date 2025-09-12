@@ -48,7 +48,7 @@ tags: ["music-theory","groove","timbre","mixing","vocal","analysis"]
 
 > 注：歌モノの**声質／言葉選び**以外の項目は、下に行くほど既存曲からの抽出難易度が上がり、時間もかかる。
 
-[▶ 要点版（LPスタイル）へ](/music-theory-class-18/src/pages/lessons/lesson18-lite.astro)
+[▶ 要点版（LPスタイル）へ](/src/pages/lessons/lesson18-lite.astro)
 
 ---
 
