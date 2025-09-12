@@ -1,11 +1,15 @@
 name: Deploy Astro to GitHub Pages
 on:
   push: { branches: [ "main" ] }
+  pull_request:
   workflow_dispatch:
 permissions:
   contents: read
   pages: write
   id-token: write
+concurrency:
+  group: "pages-${{ github.ref }}"
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,3 +30,6 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+        with: 
+         # PRのときはプレビュー、本番pushのときは通常デプロイ
+          preview: ${{ github.event_name == 'pull_request' }}

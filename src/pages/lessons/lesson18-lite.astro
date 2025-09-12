@@ -1,0 +1,123 @@
+---
+import "../../styles/tailwind.css";
+import SlideSection from "../../components/SlideSection.astro";
+import Stat from "../../components/Stat.astro";
+import Callout from "../../components/Callout.astro";
+
+const page = {
+  title: "第18回｜曲の『雰囲気』大分解（要点版）",
+  lead: "雰囲気＝パラメータの束。観測→記録→設計の3ステップで、既存曲から“再現可能”な要素に分解する。",
+};
+---
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{page.title}</title>
+  </head>
+  <body class="bg-white text-slate-900">
+    <!-- HERO -->
+    <header class="border-b bg-gradient-to-b from-slate-50 to-white">
+      <div class="mx-auto max-w-5xl px-4 py-12">
+        <p class="text-xs uppercase tracking-wider text-slate-500">Lesson 18</p>
+        <h1 class="mt-2 text-3xl md:text-5xl font-extrabold leading-tight">{page.title}</h1>
+        <p class="mt-4 text-slate-600 max-w-3xl">{page.lead}</p>
+
+        <div class="mt-6 grid grid-cols-3 gap-3 md:max-w-xl">
+          <Stat value="3" label="コア手順（観測→記録→設計）" />
+          <Stat value="8" label="要素カテゴリ" />
+          <Stat value="1" label="配布ワークシート" />
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a class="inline-flex items-center gap-2 rounded-xl bg-slate-900 text-white px-4 py-2"
+             href="/music-theory-class-18/lessons/lesson18.html">詳説を開く</a>
+          <a class="inline-flex items-center gap-2 rounded-xl border px-4 py-2"
+             href="#worksheet">ワークシートへ</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- 1. 目的 -->
+    <SlideSection id="goal" eyebrow="Purpose" title="ゴール" lead="形容詞で語らず、数値・語彙・手順で雰囲気を再現できる状態に。">
+      <div class="grid md:grid-cols-3 gap-4">
+        <Callout tone="tip" title="観測">
+          <ul><li>耳で仮説→BPM/拍子/キック配置/プリディレイ</li><li>M/Sで広がりと距離感を推定</li></ul>
+        </Callout>
+        <Callout tone="info" title="記録">
+          <ul><li>チェックリストに数値/語彙で記述</li><li>包絡・質感・ピーク帯の3語で各パート要約</li></ul>
+        </Callout>
+        <Callout tone="warn" title="設計">
+          <ul><li>雰囲気のみコピー（進行やメロは別物でOK）</li><li>Presence/Air比でVoの質感を当てる</li></ul>
+        </Callout>
+      </div>
+    </SlideSection>
+
+    <!-- 2. フレーム -->
+    <SlideSection id="frame" eyebrow="Framework" title="雰囲気分解フレーム">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="font-semibold mb-2">要素カテゴリ（8）</h3>
+          <ul class="list-disc pl-5 leading-8">
+            <li>時間軸（BPM/拍子/シャッフル/キック配置）</li>
+            <li>ピッチ（キー/スケール/代表インターバル）</li>
+            <li>音色（包絡・質感・ピーク帯）</li>
+            <li>空間（プリディレイ/テイルの粒/ディレイ）</li>
+            <li>ダイナミクス（バス圧/パラコン/SC）</li>
+            <li>ミックス傾向（トーン傾き/低域の柱）</li>
+            <li>声質（Presence比/Air比/距離感/ADT）</li>
+            <li>歌詞（言語/母音傾向/抽象度）</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-2">耳での当て方（最短版）</h3>
+          <ul class="list-disc pl-5 leading-8">
+            <li>プリディレイ（0–10ms近/20–40中/60ms〜遠）</li>
+            <li>Side量＝広さ／プレートは高域テイル長め</li>
+            <li>クレスト小＝常時タイト／SCは拍に噛む</li>
+          </ul>
+        </div>
+      </div>
+    </SlideSection>
+
+    <!-- 3. デモ手順（ワークフロー） -->
+    <SlideSection id="flow" eyebrow="Workflow" title="実践の流れ（5分版）" lead="小さく当てて、外れたら1変数ずつ戻す。">
+      <ol class="list-decimal pl-6 space-y-2">
+        <li>BPM/拍子を合わせる → シャッフル度を当てる</li>
+        <li>キック配置とスネア位置を仮置き（Dembow/4つ打ち等）</li>
+        <li>ドラムの包絡とルーム感を合わせる（Transient/Room）</li>
+        <li>VoのPresence比/Air比を合わせ、距離はプリディレイで</li>
+        <li>ラウドネスはバス圧・パラコンで微調整</li>
+      </ol>
+    </SlideSection>
+
+    <!-- 4. チェックリスト（配布） -->
+    <SlideSection id="worksheet" eyebrow="Handout" title="配布：雰囲気分解ワークシート">
+      <p class="text-slate-600">授業内で配布するチェックリスト。コピーして使ってください。</p>
+      <pre class="mt-4 rounded-2xl border bg-slate-50 p-4 overflow-x-auto text-sm">
+# 雰囲気分解ワークシート
+BPM ____ / 拍子 ____ / シャッフル ____%
+キック配置： __________
+代表インターバル： __________
+ドラム（包絡/質感/ピーク帯）： __________
+Reverb：Type ____ / PreDelay ____ms
+Presence比 ____ / Air比 ____
+1行ムード： ______________________
+      </pre>
+      <div class="mt-4">
+        <a class="inline-flex items-center gap-2 rounded-xl bg-slate-900 text-white px-4 py-2"
+           href="/music-theory-class-18/lessons/lesson18.html#配布ワークシート">詳説ページの完全版へ</a>
+      </div>
+    </SlideSection>
+
+    <!-- 5. FAQ（折りたたみ） -->
+    <SlideSection id="faq" eyebrow="FAQ" title="よくある質問">
+      <details class="mb-3"><summary>空間系は既存曲から読み取りづらくない？</summary><div class="mt-2">耳→M/S観測→クレストで3手当て。プリディレイ＝距離、Side量＝広さ、テイルの粒で種類。</div></details>
+      <details class="mb-3"><summary>歌が浮く時の最短修正は？</summary><div class="mt-2">3k前後のプレゼンスとプリディレイを原曲寄りに。</div></details>
+      <details><summary>“切ない”雰囲気の初期値は？</summary><div class="mt-2">シャッフル浅め＋短いプリディレイ＋上棚-3〜6dB。</div></details>
+    </SlideSection>
+
+    <footer class="py-10 text-center text-sm text-slate-500 border-t">
+      © {new Date().getFullYear()} Music Planz
+    </footer>
+  </body>
+</html>
