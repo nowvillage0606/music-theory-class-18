@@ -1,6 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* src/styles/tailwind.css */
+
+/* --- v4 の入口はこれ1行 --- */
+@import "tailwindcss";
+
+/* タイポグラフィのユーティリティを使うならプラグインを宣言 */
+@plugin "@tailwindcss/typography";
+
+/* v4 では "relaxed" が無いのでトークンを追加してクラスを復活させる */
+@theme {
+  --line-height-relaxed: 1.625;
+}
+
+/* ---- ここから既存の適用 ---- */
 
 /* 読みやすさの底上げ */
 .prose { @apply leading-relaxed; }
