@@ -1,0 +1,111 @@
+---
+import "../../styles/tailwind.css";
+import SlideSection from "../../components/SlideSection.astro";
+import Stat from "../../components/Stat.astro";
+import Callout from "../../components/Callout.astro";
+// 下の4つはこのあと載せる最小実装（Astro製）
+import ToggleAnswer from "../../components/ToggleAnswer.astro";
+import ExamplePair from "../../components/ExamplePair.astro";
+import PatternCard from "../../components/PatternCard.astro";
+import ProgressBar from "../../components/ProgressBar.astro";
+
+const page = {
+  title: "第19回｜歌詞の詰まりを解消する・実践編（要点版）",
+  lead: "直接語を封印して、環境・動作・象徴物で語る。仕上げ段階は"整える"、膨らませは別枠。",
+};
+---
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{page.title}</title>
+  </head>
+  <body class="bg-animated text-white">
+    <ProgressBar height="3px" />
+
+    <header class="border-b/0">
+      <div class="mx-auto max-w-5xl px-4 py-12">
+        <p class="text-xs uppercase tracking-wider text-slate-300">Lesson 19</p>
+        <h1 class="mt-2 text-4xl md:text-5xl font-extrabold">{page.title}</h1>
+        <p class="mt-4 text-slate-200 max-w-3xl">{page.lead}</p>
+
+        <div class="mt-6 grid grid-cols-3 gap-3 md:max-w-xl">
+          <Stat value="3" label="コア手順" />
+          <Stat value="2" label="比較UI" />
+          <Stat value="3" label="演習セット" />
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a class="inline-flex items-center gap-2 rounded-xl bg-white/10 border border-white/20 px-4 py-2"
+             href="/music-theory-class-18/lessons/lesson19.html">詳説を開く</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <SlideSection id="goal" eyebrow="Purpose" title="今日のゴール" icon="flag" tone="emerald">
+        <Callout tone="tip">
+          <ul>
+            <li>感情を「物・場面・動作」で<strong>即時置換</strong>できる</li>
+            <li><strong>整える／良くする</strong>の境界を身体で覚える（段階の混同を外す）</li>
+          </ul>
+        </Callout>
+      </SlideSection>
+
+      <SlideSection id="compare" eyebrow="Technique" title="直接語 → 具体で語る" icon="change_circle" tone="blue">
+        <ExamplePair>
+          <span slot="left">【直接語】わたしは寂しい</span>
+          <span slot="right">【具体】ベランダのシャツ／風で鳴るプラスチックの洗濯バサミ</span>
+        </ExamplePair>
+        <div class="mt-4"></div>
+        <ExamplePair>
+          <span slot="left">【直接語】嬉しい</span>
+          <span slot="right">【具体】浴槽から指を出して、湯気越しに口ずさむ鼻歌</span>
+        </ExamplePair>
+
+        <ToggleAnswer title="着眼点（どこを見る？）" open={true}>
+          <ul class="list-disc pl-5">
+            <li>場所・時間・季節</li>
+            <li>形／質感／色</li>
+            <li>動作</li>
+            <li>因果（なぜそれで想起する？）</li>
+          </ul>
+        </ToggleAnswer>
+      </SlideSection>
+
+      <SlideSection id="polish" eyebrow="Workflow" title=""整える"と"良くする"の分離" icon="tune" tone="amber">
+        <div class="grid gap-4 md:grid-cols-2">
+          <PatternCard
+            title="整える（微調整）"
+            good="可読性／語尾の均し／改行設計／比喩衝突の整理。意味は変えない。"
+            pitfall="つい比喩を足して意味まで変える。"
+            fix="微調整はタイムボックス（例：30分）。『語順/助詞/改行』以外は触らないと宣言する。" 
+            icon="build_circle" />
+          <PatternCard
+            title="良くする（膨らませ）"
+            good="比喩刷新・象徴物差し替え・視点転換など、意味を更新する工程。"
+            pitfall="仕上げ段階でやって曲が崩れる。"
+            fix="膨らませは別ブロックで：発想→休憩→評価→採用の4手順。" 
+            icon="auto_awesome" />
+        </div>
+      </SlideSection>
+
+      <SlideSection id="drills" eyebrow="Practice" title="3つの演習（タイムボックス）" icon="task" tone="purple">
+        <ol class="list-decimal pl-6 space-y-3">
+          <li><strong>感情×物×場所×色</strong>で1行詩×3（各20秒）</li>
+          <li><strong>直接語→言い換え</strong>×5（各30秒）</li>
+          <li><strong>整えるだけ</strong>で1コーラス整形（意味は足さない／削らない）</li>
+        </ol>
+        <ToggleAnswer title="進め方のコツ">
+          <ul class="list-disc pl-5">
+            <li>音読しながら改行位置を決める（呼吸＝改行）</li>
+            <li>名詞・動詞・形容の偏りを数える（バランスだけ整える）</li>
+          </ul>
+        </ToggleAnswer>
+      </SlideSection>
+    </main>
+
+    <footer class="py-10 text-center text-sm text-slate-400 border-t border-white/10">
+      © 2025 NoViLholic
+    </footer>
+  </body>
+</html>
