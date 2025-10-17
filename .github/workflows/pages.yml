@@ -1,6 +1,6 @@
 name: Deploy Astro to GitHub Pages
 on:
-  push: { branches: [ "main", "heroui-add"] }
+  push: { branches: [ "main", "lesson19-v2"] }
   pull_request:
   workflow_dispatch:
 permissions:
