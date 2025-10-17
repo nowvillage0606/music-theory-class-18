@@ -16,7 +16,8 @@ const page = {
 ---
 <html lang="ja">
   <head>
-    <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>{page.title}</title>
   </head>
   <body class="bg-animated text-white">
@@ -35,8 +36,11 @@ const page = {
         </div>
 
         <div class="mt-8 flex flex-wrap gap-3">
-          <a class="inline-flex items-center gap-2 rounded-xl bg-white/10 border border-white/20 px-4 py-2"
-             href="/music-theory-class-18/lessons/lesson19.html">詳説を開く</a>
+          <a
+            class="inline-flex items-center gap-2 rounded-xl bg-white/10 border border-white/20 px-4 py-2"
+            href="/music-theory-class-18/lessons/lesson19.html"
+            >詳説を開く</a
+          >
         </div>
       </div>
     </header>
@@ -72,20 +76,29 @@ const page = {
         </ToggleAnswer>
       </SlideSection>
 
-      <SlideSection id="polish" eyebrow="Workflow" title=""整える"と"良くする"の分離" icon="tune" tone="amber">
+      <!-- ★ ここが原因だった：ASCIIダブルクォートでの入れ子を日本語引用符に変更 -->
+      <SlideSection
+        id="polish"
+        eyebrow="Workflow"
+        title="「整える」と「良くする」の分離"
+        icon="tune"
+        tone="amber"
+      >
         <div class="grid gap-4 md:grid-cols-2">
           <PatternCard
             title="整える（微調整）"
             good="可読性／語尾の均し／改行設計／比喩衝突の整理。意味は変えない。"
             pitfall="つい比喩を足して意味まで変える。"
-            fix="微調整はタイムボックス（例：30分）。『語順/助詞/改行』以外は触らないと宣言する。" 
-            icon="build_circle" />
+            fix="微調整はタイムボックス（例：30分）。『語順/助詞/改行』以外は触らないと宣言する。"
+            icon="build_circle"
+          />
           <PatternCard
             title="良くする（膨らませ）"
             good="比喩刷新・象徴物差し替え・視点転換など、意味を更新する工程。"
             pitfall="仕上げ段階でやって曲が崩れる。"
-            fix="膨らませは別ブロックで：発想→休憩→評価→採用の4手順。" 
-            icon="auto_awesome" />
+            fix="膨らませは別ブロックで：発想→休憩→評価→採用の4手順。"
+            icon="auto_awesome"
+          />
         </div>
       </SlideSection>
 
