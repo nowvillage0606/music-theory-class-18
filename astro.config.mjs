@@ -1,13 +1,25 @@
-import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
+// astro.config.mjs
+import { defineConfig } from "astro/config";
+import react from "@astrojs/react";
+import tailwindcss from "@tailwindcss/vite"; // ★コレがないとエラー
 
+// GitHub Pages を使うなら ↓ をあなたの環境に合わせて設定
+// （このリポなら base は "/music-theory-class-18"）
 export default defineConfig({
-  site: 'https://nowvillage0606.github.io',      // ← GitHubユーザーのPagesドメイン
-  base: '/music-theory-class-18',                 // ← リポ名（Project Pages用）
-  output: 'static',
-  build: { format: 'file' },                      // ← .htmlで出力（URL互換）
-  integrations: [tailwind({ config: { applyBaseStyles: true } })],
-  markdown: {
-    // 必要になったら remark/rehype を追加
-  }
+  site: "https://nowvillage0606.github.io",
+  base: "/music-theory-class-18",
+
+  // SSGのままでOK（SSR不要なら触らない）
+  output: "static",
+  build: { format: "file" },
+
+  // Tailwind v4 は Vite プラグインで読む
+  vite: {
+    plugins: [tailwindcss()],
+  },
+
+  // React islands
+  integrations: [react()],
+
+  // 必要ならここにmarkdownや画像最適化の設定を追加
 });

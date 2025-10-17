@@ -1,0 +1,13 @@
+---
+const { leftTitle = "直接語", rightTitle = "具体物で語る" } = Astro.props;
+---
+<div class="grid gap-4 md:grid-cols-2">
+  <div class="rounded-xl border border-white/15 bg-white/5 p-4">
+    <p class="text-xs uppercase tracking-wide text-slate-300">{leftTitle}</p>
+    <div class="mt-2 whitespace-pre-wrap"><slot name="left" /></div>
+  </div>
+  <div class="rounded-xl border border-emerald-400/20 bg-emerald-400/10 p-4">
+    <p class="text-xs uppercase tracking-wide text-emerald-200">{rightTitle}</p>
+    <div class="mt-2 whitespace-pre-wrap"><slot name="right" /></div>
+  </div>
+</div>

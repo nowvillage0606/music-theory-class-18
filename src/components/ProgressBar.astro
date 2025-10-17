@@ -1,0 +1,14 @@
+---
+const { height = "3px" } = Astro.props;
+---
+<div id="__prog" style={`position:fixed;inset:0 auto auto 0;height:${height};background:rgba(52,211,153,.9);width:0;z-index:50;`}></div>
+<script is:inline>
+  const el = document.getElementById('__prog');
+  const onScroll = () => {
+    const d = document.documentElement;
+    const max = d.scrollHeight - d.clientHeight;
+    el.style.width = (max ? (d.scrollTop / max) * 100 : 0) + '%';
+  };
+  document.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
