@@ -1,15 +1,15 @@
 ---
-import "../../styles/tailwind.css";
-import SlideSection from "../../components/SlideSection.astro";
-import Callout from "../../components/Callout.astro";
-import ExamplePair from "../../components/ExamplePair.astro";
-import PatternCard from "../../components/PatternCard.astro";
-import ToggleAnswer from "../../components/ToggleAnswer.astro";
-import ProgressBar from "../../components/ProgressBar.astro";
+import '../../styles/tailwind.css';
+import SlideSection from '../../components/SlideSection.astro';
+import Callout from '../../components/Callout.astro';
+import ExamplePair from '../../components/ExamplePair.astro';
+import PatternCard from '../../components/PatternCard.astro';
+import ToggleAnswer from '../../components/ToggleAnswer.astro';
+import ProgressBar from '../../components/ProgressBar.astro';
 
 const page = {
-  title: "第20回｜ボーカルの世界・入門（要点版）",
-  lead: ""上手い"を分解し、"響く"を構造で理解する。"
+  title: '第20回｜ボーカルの世界・入門（要点版）',
+  lead: '「上手い」を分解し、「響く」を構造で理解する。'
 };
 ---
 <html lang="ja">
@@ -51,7 +51,7 @@ const page = {
       <SlideSection id="goal" eyebrow="Purpose" title="ゴール" icon="flag" tone="emerald">
         <Callout tone="tip">
           <ul class="list-disc pl-5 space-y-1">
-            <li>"上手い"と"響く"を分けて理解する</li>
+            <li>「上手い」と「響く」を分けて理解する</li>
             <li>声区（胸/ミックス/ファルセット）とEQの対応を掴む</li>
           </ul>
         </Callout>
@@ -81,25 +81,25 @@ const page = {
             good="250〜400Hzを譲りつつ厚みは残す"
             pitfall="低域を削りすぎて痩せる"
             fix="250Hz前後を1〜2dB確保"
-            icon="equalizer"/>
+            icon="equalizer" />
           <PatternCard
             title="抜けを作る"
             good="3〜5kHzで前出し感を微調整"
             pitfall="上げすぎると刺さる"
             fix="+1〜2dB以内／楽器と帯域整理"
-            icon="auto_awesome"/>
+            icon="auto_awesome" />
           <PatternCard
             title="こもり防止"
             good="800Hz〜1.5kHzを軽くディップ"
             pitfall="削り過ぎで薄くなる"
             fix="-1〜2dBの範囲で様子見"
-            icon="noise_control_off"/>
+            icon="noise_control_off" />
           <PatternCard
             title="空気感の足し引き"
             good="10〜16kHzで明るさ/空気感を分担"
             pitfall="歯擦音が強調される"
             fix="ディエッサー→微ブーストの順"
-            icon="blur_on"/>
+            icon="blur_on" />
         </div>
       </SlideSection>
     </main>
