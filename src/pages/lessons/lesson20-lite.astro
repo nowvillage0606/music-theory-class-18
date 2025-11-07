@@ -13,13 +13,8 @@ const page = {
   lead: '「上手い」を分解し、「響く」を構造で理解する。'
 };
 ---
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>{page.title}</title>
-  </head>
-  <body class="bg-animated text-white">
+<DefaultLayout title={page.title} description={page.lead}>
+  <div class="bg-animated text-white">
     <div class="fixed inset-0 -z-10 bg-black/70"></div>
     <ProgressBar height="3px" />
 
@@ -111,5 +106,5 @@ const page = {
     <footer class="py-10 text-center text-sm text-slate-400 border-t border-white/10">
       © 2025 NoViLholic
     </footer>
-  </body>
-</html>
+  </div>
+</DefaultLayout>
