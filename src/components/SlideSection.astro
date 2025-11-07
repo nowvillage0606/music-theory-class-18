@@ -1,19 +1,19 @@
 ---
 const {
-  id = "",
-  eyebrow = "",
-  title = "",
-  lead = "",
-  icon = "",        // ← 追加: Material Symbols の名前
-  tone = "slate",   // ← 追加: 色トーン (slate|blue|emerald|amber|rose)
+  id = '',
+  eyebrow = '',
+  title = '',
+  lead = '',
+  icon = '',
+  tone = 'slate',
 } = Astro.props;
 
 const tones = {
-  slate:   "bg-slate-50 border-slate-200",
-  blue:    "bg-blue-50 border-blue-200",
-  emerald: "bg-emerald-50 border-emerald-200",
-  amber:   "bg-amber-50 border-amber-200",
-  rose:    "bg-rose-50 border-rose-200",
+  slate:   'bg-slate-50 border-slate-200',
+  blue:    'bg-blue-50 border-blue-200',
+  emerald: 'bg-emerald-50 border-emerald-200',
+  amber:   'bg-amber-50 border-amber-200',
+  rose:    'bg-rose-50 border-rose-200',
 };
 ---
 <section id={id} class="scroll-mt-24 py-16 border-b">
@@ -27,8 +27,23 @@ const tones = {
     </div>
     {lead && <p class="mt-3 text-slate-600 max-w-3xl">{lead}</p>}
 
-    <div class={`mt-6 rounded-2xl border p-6 ${tones[tone]}`}>
+    {/* ▼ ここを黒固定に */}
+    <div class={`mt-6 rounded-2xl border p-6 ${tones[tone]} slot-text text-black`}>
       <slot />
     </div>
   </div>
 </section>
+
+<style>
+  /* このコンポーネント内だけに作用（Astroのスコープ付き） */
+  .slot-text,
+  .slot-text :is(p, li, span, div, strong, em, small, code, blockquote, h3, h4, a) {
+    color: #000;
+  }
+  /* 子コンポーネント側で text-slate-* や text-white が付いていても黒に上書き */
+  .slot-text :is(.text-white, .text-slate-50, .text-slate-100, .text-slate-200, .text-slate-300) {
+    color: #000 !important;
+  }
+  /* リンクの視認性（必要なら外してOK） */
+  .slot-text a { text-decoration: underline; }
+</style>

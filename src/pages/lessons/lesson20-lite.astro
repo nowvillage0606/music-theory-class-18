@@ -1,0 +1,111 @@
+---
+import DefaultLayout from '../../layouts/DefaultLayout.astro';
+import '../../styles/tailwind.css';
+import SlideSection from '../../components/SlideSection.astro';
+import Callout from '../../components/Callout.astro';
+import ExamplePair from '../../components/ExamplePair.astro';
+import PatternCard from '../../components/PatternCard.astro';
+import ToggleAnswer from '../../components/ToggleAnswer.astro';
+import ProgressBar from '../../components/ProgressBar.astro';
+import EqGallery from '../../components/EqGallery.tsx';
+
+const page = {
+  title: '第20回｜ボーカルの世界・入門（要点版）',
+  lead: '「上手い」を分解し、「響く」を構造で理解する。'
+};
+---
+<DefaultLayout title={page.title} description={page.lead}>
+  <div class="bg-animated text-white">
+    <div class="fixed inset-0 -z-10 bg-black/70"></div>
+    <ProgressBar height="3px" />
+
+    <header class="border-b/0">
+      <div class="mx-auto max-w-5xl px-4 py-12">
+        <p class="text-xs uppercase tracking-wider text-slate-300">Lesson 20</p>
+        <h1 class="mt-2 text-4xl md:text-5xl font-extrabold">{page.title}</h1>
+        <p class="mt-4 text-slate-200 max-w-3xl">{page.lead}</p>
+
+        <div class="mt-6 grid grid-cols-3 gap-3 md:max-w-xl">
+          <div class="rounded-2xl border border-white/10 px-4 py-3 text-center">
+            <div class="text-2xl font-extrabold">3</div><div class="text-xs opacity-80">視点（音響/生理/Mix）</div>
+          </div>
+          <div class="rounded-2xl border border-white/10 px-4 py-3 text-center">
+            <div class="text-2xl font-extrabold">4</div><div class="text-xs opacity-80">観察点（G3/D4/A4/F5）</div>
+          </div>
+          <div class="rounded-2xl border border-white/10 px-4 py-3 text-center">
+            <div class="text-2xl font-extrabold">5</div><div class="text-xs opacity-80">EQ帯域の要点</div>
+          </div>
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a class="inline-flex items-center gap-2 rounded-xl bg-white/10 border border-white/20 px-4 py-2"
+             href="/music-theory-class-18/lessons/lesson20.html">詳説を開く</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <SlideSection id="goal" eyebrow="Purpose" title="ゴール" icon="flag" tone="emerald">
+        <Callout tone="tip">
+          <ul class="list-disc pl-5 space-y-1">
+            <li>「上手い」と「響く」を分けて理解する</li>
+            <li>声区（胸/ミックス/ファルセット）とEQの対応を掴む</li>
+          </ul>
+        </Callout>
+      </SlideSection>
+
+      <SlideSection id='observe' eyebrow='Observation' title='声の構造を観察する' icon='graphic_eq' tone='blue'>
+        <div class='grid gap-4 md:grid-cols-3'>
+          <div class='rounded-xl border p-4 bg-white/70 text-black'>
+            <p class='text-xs text-slate-600'>胸声</p>
+            <p class='mt-1'>200〜400Hzが厚い／芯が太い</p>
+          </div>
+          <div class='rounded-xl border p-4 bg-white/70 text-black'>
+            <p class='text-xs text-slate-600'>ミックス</p>
+            <p class='mt-1'>800Hz〜2kHzが滑らか／少ない息で通る</p>
+          </div>
+          <div class='rounded-xl border p-4 bg-white/70 text-black'>
+            <p class='text-xs text-slate-600'>ファルセット</p>
+            <p class='mt-1'>3kHz〜中心／空気感が増す</p>
+          </div>
+        </div>
+
+        <ToggleAnswer title='測定チェックリスト' open={true} />
+      </SlideSection>
+
+      <SlideSection id="mix" eyebrow="Mix Tips" title="ボーカルMixの基本帯域" icon="tune" tone="amber">
+        <div class="grid gap-4 md:grid-cols-2">
+          <PatternCard
+            title="基音を支える"
+            good="250〜400Hzを譲りつつ厚みは残す"
+            pitfall="低域を削りすぎて痩せる"
+            fix="250Hz前後を1〜2dB確保"
+            icon="equalizer" />
+          <PatternCard
+            title="抜けを作る"
+            good="3〜5kHzで前出し感を微調整"
+            pitfall="上げすぎると刺さる"
+            fix="+1〜2dB以内／楽器と帯域整理"
+            icon="auto_awesome" />
+          <PatternCard
+            title="こもり防止"
+            good="800Hz〜1.5kHzを軽くディップ"
+            pitfall="削り過ぎで薄くなる"
+            fix="-1〜2dBの範囲で様子見"
+            icon="noise_control_off" />
+          <PatternCard
+            title="空気感の足し引き"
+            good="10〜16kHzで明るさ/空気感を分担"
+            pitfall="歯擦音が強調される"
+            fix="ディエッサー→微ブーストの順"
+            icon="blur_on" />
+        </div>
+      <EqGallery client:load />
+      </SlideSection>
+    </main>
+
+    <footer class="py-10 text-center text-sm text-slate-400 border-t border-white/10">
+      © 2025 NoViLholic
+    </footer>
+  </div>
+</DefaultLayout>

@@ -1,6 +1,6 @@
 ---
-import "../styles/tailwind.css"; // ← 追加
-const { title = "音楽理論勉強会", description = "" } = Astro.props;
+import '../styles/tailwind.css';
+const { title = '音楽理論勉強会', description = '' } = Astro.props;
 ---
 <html lang="ja">
   <head>
@@ -9,11 +9,18 @@ const { title = "音楽理論勉強会", description = "" } = Astro.props;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL,GRAD,opsz@400,0,0,24&display=swap">
+      href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap'>
     <style>
-        .ms { font-family: 'Material Symbols Outlined'; font-weight: 400; font-style: normal;
-        font-size: 1.25em; line-height: 1; vertical-align: -2px; }
+      .ms{
+        font-family:'Material Symbols Outlined' !important;
+        font-weight:400; font-style:normal; line-height:1; letter-spacing:normal;
+        -webkit-font-feature-settings:'liga';
+        -webkit-font-smoothing:antialiased;
+        font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
+        font-size:1.25em; vertical-align:-2px;
+      }
     </style>
   </head>
   <body class="bg-white text-slate-800">
