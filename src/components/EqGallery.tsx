@@ -2,10 +2,10 @@ import {useState} from 'react';
 import {Modal, ModalContent, ModalBody, Button} from '@heroui/react';
 
 const imgs = [
-  {src:'/music-theory-class-18/assets/lesson20/eq_chest_G3.png', alt:'胸声 G3'},
-  {src:'/music-theory-class-18/assets/lesson20/eq_chest_D4.png', alt:'胸声 D4'},
-  {src:'/music-theory-class-18/assets/lesson20/eq_mix_A4.png',   alt:'ミックス A4'},
-  {src:'/music-theory-class-18/assets/lesson20/eq_falsetto_F5.png', alt:'ファルセット F5'},
+  {src:'/music-theory-class-18/assets/lesson20/G3.png', alt:'胸声 G3'},
+  {src:'/music-theory-class-18/assets/lesson20/C4.png', alt:'胸声 C4'},
+  {src:'/music-theory-class-18/assets/lesson20/B4.png',   alt:'ミックス B4'},
+  {src:'/music-theory-class-18/assets/lesson20/E5.png', alt:'ファルセット E5'},
 ];
 
 export default function EqGallery(){
