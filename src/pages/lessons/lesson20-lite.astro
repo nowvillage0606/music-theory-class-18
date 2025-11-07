@@ -6,6 +6,7 @@ import ExamplePair from '../../components/ExamplePair.astro';
 import PatternCard from '../../components/PatternCard.astro';
 import ToggleAnswer from '../../components/ToggleAnswer.astro';
 import ProgressBar from '../../components/ProgressBar.astro';
+import EqGallery from '../../components/EqGallery.tsx';
 
 const page = {
   title: '第20回｜ボーカルの世界・入門（要点版）',
@@ -57,21 +58,23 @@ const page = {
         </Callout>
       </SlideSection>
 
-      <SlideSection id="observe" eyebrow="Observation" title="声の構造を観察する" icon="graphic_eq" tone="blue">
-        <div class="grid gap-6 md:grid-cols-2">
-          <ExamplePair>
-            <span slot="left">胸声：200〜400Hzが厚い／芯が太い</span>
-            <span slot="right">ファルセット：3kHz〜中心／空気感が増す</span>
-          </ExamplePair>
-
-          <ToggleAnswer title="測定チェックリスト" open={true}>
-            <ul class="list-disc pl-5 space-y-1">
-              <li>同一母音「あ」で録る（G3 / D4 / A4 / F5）</li>
-              <li>H1–H2差、1〜2kHzの滑らかさ、3〜5kHzのピーク</li>
-              <li>スクショは /music-theory-class-18/assets/lesson20/ に保存</li>
-            </ul>
-          </ToggleAnswer>
+      <SlideSection id='observe' eyebrow='Observation' title='声の構造を観察する' icon='graphic_eq' tone='blue'>
+        <div class='grid gap-4 md:grid-cols-3'>
+          <div class='rounded-xl border p-4 bg-white/70 text-black'>
+            <p class='text-xs text-slate-600'>胸声</p>
+            <p class='mt-1'>200〜400Hzが厚い／芯が太い</p>
+          </div>
+          <div class='rounded-xl border p-4 bg-white/70 text-black'>
+            <p class='text-xs text-slate-600'>ミックス</p>
+            <p class='mt-1'>800Hz〜2kHzが滑らか／少ない息で通る</p>
+          </div>
+          <div class='rounded-xl border p-4 bg-white/70 text-black'>
+            <p class='text-xs text-slate-600'>ファルセット</p>
+            <p class='mt-1'>3kHz〜中心／空気感が増す</p>
+          </div>
         </div>
+
+        <ToggleAnswer title='測定チェックリスト' open={true} />
       </SlideSection>
 
       <SlideSection id="mix" eyebrow="Mix Tips" title="ボーカルMixの基本帯域" icon="tune" tone="amber">
@@ -101,6 +104,7 @@ const page = {
             fix="ディエッサー→微ブーストの順"
             icon="blur_on" />
         </div>
+      <EqGallery client:load />
       </SlideSection>
     </main>
 
