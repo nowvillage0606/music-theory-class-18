@@ -1,10 +1,10 @@
-—
+---
 layout: ../../layouts/LessonLayout.astro
 title: "第21回｜さまざまな編曲技法を紹介（詳説版）"
 date: "2025-11-xx"
 summary: "「飽きない」を作るための、パート数・リズム・音色・空間の操作テクニック詳説。"
 tags: ["music-theory","lesson21"]
-—
+---
 
 > **要点版はこちら →** [/music-theory-class-18/lessons/lesson21-lite.html](/music-theory-class-18/lessons/lesson21-lite.html)
 
