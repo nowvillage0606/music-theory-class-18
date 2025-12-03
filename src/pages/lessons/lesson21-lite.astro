@@ -1,213 +1,221 @@
 ---
 import "../../styles/tailwind.css";
-import SlideSection from "../../components/SlideSection.astro";
-import Stat from "../../components/Stat.astro";
-import Callout from "../../components/Callout.astro";
-import ExamplePair from "../../components/ExamplePair.astro";
-import ToggleAnswer from "../../components/ToggleAnswer.astro";
-import PatternCard from "../../components/PatternCard.astro";
-import ProgressBar from "../../components/ProgressBar.astro";
-// 新しく作ったコンポーネントを読み込み
-import Rating from "../../components/Rating.astro";
+// 既存のコンポーネントはあえて使わず、全てこのファイル内でデザイン完結させます
+import Rating from "../../components/Rating.astro"; 
 
 const page = {
-  title: "第21回｜さまざまな編曲技法を紹介",
-  lead: "「パートを足すだけ」は卒業。最小限の変化で最大の効果を生む、4つの編曲アプローチと「引き算」の美学。",
+  title: "Arrangement Techniques",
+  subtitle: "Lesson 21",
+  lead: "Simple changes, Maximum impact.",
+  date: "2025.11.20"
+};
+
+// 外部フォントの読み込み用URL
+const fontUrl = "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap";
+
+// 画像URL（Unsplashからランダムに取得。本番では差し替えてください）
+const images = {
+  hero: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=2070&auto=format&fit=crop",
+  studio: "https://images.unsplash.com/photo-1598653222000-6b7b7a552625?q=80&w=2070&auto=format&fit=crop",
+  drums: "https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?q=80&w=1000&auto=format&fit=crop",
+  piano: "https://images.unsplash.com/photo-1552422535-c45813c61732?q=80&w=1000&auto=format&fit=crop",
+  mixer: "https://images.unsplash.com/photo-1558584673-c84523dd228c?q=80&w=1000&auto=format&fit=crop",
 };
 ---
 
-<html lang="ja">
+<html lang="ja" class="scroll-smooth">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>{page.title}</title>
+    <title>{page.title} | {page.subtitle}</title>
+    <!-- Google Fonts Import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href={fontUrl} rel="stylesheet">
+    
+    <style>
+      /* 基本フォント設定 */
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #050505; /* Deep Black */
+        color: #e5e5e5;
+      }
+      h1, h2, h3, .serif {
+        font-family: 'Playfair Display', serif;
+      }
+      /* スクロールバー装飾（Chrome/Safari） */
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: #111; }
+      ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+    </style>
   </head>
-  <body class="bg-animated text-white">
-    <!-- 暗幕オーバーレイ -->
-    <div class="fixed inset-0 -z-10 bg-black/70"></div>
-    <ProgressBar height="3px" />
-
-    <header class="border-b/0">
-      <div class="mx-auto max-w-5xl px-4 py-12">
-        <p class="text-xs uppercase tracking-wider text-slate-300">
-          Lesson 21
-        </p>
-        <h1 class="mt-2 text-4xl font-extrabold md:text-5xl">{page.title}</h1>
-        <p class="mt-4 max-w-3xl text-slate-200">{page.lead}</p>
-
-        <div class="mt-6 grid grid-cols-3 gap-3 md:max-w-xl">
-          <Stat value="4" label="変化の視点" />
-          <Stat value="6" label="即戦力テク" />
-          <Stat value="引く" label="重要概念" />
-        </div>
-
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a
-            class="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2 hover:bg-white/20 transition-colors"
-            href="/music-theory-class-18/lessons/lesson21.html"
-            >詳説を開く</a
-          >
-        </div>
-      </div>
-    </header>
+  
+  <body class="antialiased selection:bg-white selection:text-black">
+    
+    <!-- Navigation (Minimal) -->
+    <nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-6 mix-blend-difference text-white">
+      <span class="text-sm tracking-widest uppercase font-bold">{page.subtitle}</span>
+      <a href="/music-theory-class-18/lessons/lesson21.html" class="text-xs border border-white/40 px-4 py-2 rounded-full hover:bg-white hover:text-black transition-all duration-300">
+        READ FULL NOTE
+      </a>
+    </nav>
 
     <main>
-      <!-- ゴール -->
-      <SlideSection
-        id="goal"
-        eyebrow="Goal"
-        title="この授業の狙い"
-        icon="flag"
-        tone="emerald"
-      >
-        <Callout tone="tip">
-          <ul class="list-disc pl-5 space-y-2">
-            <li>
-              「伝えたいこと」が一番前に浮き出る<strong>編曲の優先順位</strong>をつかむ
-            </li>
-            <li>
-              変化をつけるための<strong>4つの操作（数・リズム・音・色）</strong>を整理する
-            </li>
-            <li>
-              「足す」だけでなく<strong>「引く・ずらす・変える」</strong>という選択肢を持つ
-            </li>
-          </ul>
-        </Callout>
-      </SlideSection>
-
-      <!-- 誤解と真実 -->
-      <SlideSection
-        id="concept"
-        eyebrow="Concept"
-        title="アレンジの誤解"
-        icon="lightbulb"
-        tone="amber"
-      >
-        <div class="grid gap-4 md:grid-cols-2">
-          <PatternCard
-            title="展開作り"
-            good="最小限の操作で効かせる"
-            pitfall="ガラッと変えないと不安"
-            fix="聞かせたいセクションをぶらさない変化量でOK"
-            icon="tune"
-          />
-          <PatternCard
-            title="盛り上げ方"
-            good="引く・変える・ずらす"
-            pitfall="パートをとにかく足す"
-            fix="音の隙間はパート追加以外でも埋められる"
-            icon="graphic_eq"
-          />
+      <!-- Hero Section -->
+      <section class="relative h-screen w-full flex flex-col justify-center items-center overflow-hidden">
+        <!-- Background Image with Parallax-like feel via object-cover -->
+        <div class="absolute inset-0 z-0">
+          <img src={images.hero} alt="Studio" class="w-full h-full object-cover opacity-60 grayscale-[30%]" />
+          <div class="absolute inset-0 bg-black/40"></div>
         </div>
-      </SlideSection>
 
-      <!-- 4つの操作・詳細 -->
-      <SlideSection
-        id="methods"
-        eyebrow="Methods"
-        title="変化の4大要素"
-        icon="category"
-        tone="blue"
-      >
-        <p class="mb-6 text-slate-300">
-          理論上の分類ではなく、人間が「音が変わった」と感じる要素（音響的構成要素）をベースにした4つの操作方法です。
-        </p>
+        <div class="relative z-10 text-center px-4">
+          <p class="text-emerald-400 tracking-[0.3em] text-xs md:text-sm uppercase mb-4 animate-fade-in-up">The Art of Production</p>
+          <h1 class="text-5xl md:text-8xl font-medium tracking-tight leading-tight mb-6 mix-blend-overlay opacity-90">
+            ARRANGE<br/><i class="font-thin">MENT</i>
+          </h1>
+          <p class="max-w-md mx-auto text-sm md:text-base text-gray-300 font-light leading-relaxed">
+            {page.lead}<br/>
+            <span class="text-xs text-gray-500 mt-2 block">Minimal changes for maximum emotional impact.</span>
+          </p>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 animate-bounce">
+          <span class="material-symbols-outlined text-white/50 text-3xl">arrow_downward</span>
+        </div>
+      </section>
 
-        <div class="grid gap-6 md:grid-cols-2">
-          <!-- 1. パート数 -->
-          <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
-            <div class="mb-3 flex items-center justify-between">
-              <h3 class="flex items-center gap-2 text-lg font-bold text-emerald-300">
-                <span class="material-symbols-outlined">group_add</span> パート数の操作
-              </h3>
+      <!-- Section 1: Introduction (Typographic Layout) -->
+      <section class="py-24 px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+        <div class="md:col-span-4">
+          <h2 class="text-3xl md:text-5xl leading-tight">
+            Don't add.<br/>
+            <span class="italic text-emerald-500">Just shift.</span>
+          </h2>
+        </div>
+        <div class="md:col-span-8 space-y-8">
+          <p class="text-lg md:text-xl text-gray-400 font-light border-l border-emerald-500/50 pl-6">
+            「セクションが変わったらガラッと変えなきゃ」「音を足さなきゃ」
+            <br/><span class="text-white">その思い込みを捨てましょう。</span>
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-gray-500">
+            <div>
+              <strong class="block text-white mb-2 uppercase tracking-wide text-xs">Misconception</strong>
+              パートを足し続けることがアレンジではない。音の隙間は「空間」や「リズム」でも埋められる。
             </div>
-            <div class="space-y-1 mb-4">
-              <Rating label="難易度" value={1} />
-              <Rating label="効果" value={4} />
+            <div>
+              <strong class="block text-white mb-2 uppercase tracking-wide text-xs">Solution</strong>
+              「引く・変える・ずらす」。聞かせたいセクションをブレさせないための、最小限の操作を知る。
             </div>
-            <p class="text-sm text-slate-300 leading-relaxed">
-              最もシンプルで強力。サビのアレンジを先に作り、そこから「引く」ことでコントラストを作るのが王道。
-            </p>
-          </div>
-
-          <!-- 2. リズム -->
-          <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
-             <div class="mb-3 flex items-center justify-between">
-              <h3 class="flex items-center gap-2 text-lg font-bold text-amber-300">
-                <span class="material-symbols-outlined">timer</span> リズムの操作
-              </h3>
-            </div>
-            <div class="space-y-1 mb-4">
-              <Rating label="難易度" value={2} />
-              <Rating label="効果" value={4} />
-            </div>
-            <p class="text-sm text-slate-300 leading-relaxed">
-              ドラムフィルの変更、ハーフタイム、シンコペーションなど。ピアノロールで「隙間」を可視化して操作する。
-            </p>
-          </div>
-
-          <!-- 3. 音色 -->
-          <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
-             <div class="mb-3 flex items-center justify-between">
-              <h3 class="flex items-center gap-2 text-lg font-bold text-pink-300">
-                <span class="material-symbols-outlined">piano</span> 音色の操作
-              </h3>
-            </div>
-            <div class="space-y-1 mb-4">
-              <Rating label="難易度" value={3} />
-              <Rating label="効果" value={3} />
-            </div>
-            <p class="text-sm text-slate-300 leading-relaxed">
-              同じフレーズでも楽器を変えるだけで耳に残る。セクションの空気感を壊さない「統一感」のある選定が鍵。
-            </p>
-          </div>
-
-          <!-- 4. 音符・空間 -->
-          <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
-             <div class="mb-3 flex items-center justify-between">
-              <h3 class="flex items-center gap-2 text-lg font-bold text-indigo-300">
-                <span class="material-symbols-outlined">queue_music</span> 音符・空間
-              </h3>
-            </div>
-            <div class="space-y-1 mb-4">
-              <Rating label="難易度" value={5} />
-              <Rating label="効果" value={4} />
-            </div>
-            <p class="text-sm text-slate-300 leading-relaxed">
-              リハモ、裏メロ作成、パンニングやリバーブ操作。高難易度だが、ここができると「プロっぽさ」が出る。
-            </p>
           </div>
         </div>
-      </SlideSection>
+      </section>
 
-      <!-- すぐできるアイデア -->
-      <SlideSection
-        id="tips"
-        eyebrow="Tips"
-        title="すぐ使えるちょい足し"
-        icon="auto_fix_high"
-        tone="pink"
-      >
-        <div class="rounded-2xl bg-white/5 border border-white/10 overflow-hidden">
-            <ToggleAnswer title="今日から使える6つのアイデア" open={true}>
-                <ul class="list-decimal pl-5 space-y-3 text-slate-200">
-                    <li>サビで <strong>Perc（シェイカー等）</strong> を1〜2本足す</li>
-                    <li>Aメロで <strong>DrumかBass</strong> を思い切って抜く</li>
-                    <li>1セクションだけ <strong>ハーフリズム</strong> を採用する</li>
-                    <li>サビ2回しのメロディの <strong>リズムか音程だけ</strong> 変える</li>
-                    <li>キメ直前に <strong>1拍〜1小節の休符</strong> を作る</li>
-                    <li>聴かせたい言葉の前後に <strong>他パートを止めて「間」</strong> を作る</li>
-                </ul>
-            </ToggleAnswer>
+      <!-- Section 2: The 4 Methods (Bento Grid Layout) -->
+      <section class="py-12 px-4 md:px-8 max-w-screen-2xl mx-auto">
+        <div class="flex items-end justify-between mb-10 px-2">
+            <h2 class="text-xs font-bold uppercase tracking-widest text-gray-500">01 -- Methods</h2>
+            <p class="serif italic text-2xl md:text-3xl">4 Core Elements</p>
         </div>
-      </SlideSection>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4 h-auto md:h-[800px]">
+          
+          <!-- Method 1: Count (Large Card) -->
+          <div class="group relative md:col-span-2 md:row-span-1 bg-zinc-900 overflow-hidden rounded-sm border border-white/5">
+            <img src={images.studio} class="absolute inset-0 w-full h-full object-cover opacity-40 transition-transform duration-700 group-hover:scale-105" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-8">
+                <div class="text-emerald-400 text-xs font-bold uppercase tracking-widest mb-2">01. Quantity</div>
+                <h3 class="text-3xl md:text-4xl mb-2">Part Counting</h3>
+                <p class="text-gray-400 text-sm max-w-lg mb-4">パート数の足し引き。サビを作ってから「引く」のが王道。</p>
+                <div class="bg-black/80 backdrop-blur-md inline-block px-4 py-2 rounded-full border border-white/10">
+                    <Rating label="Effect" value={4} />
+                </div>
+            </div>
+          </div>
+
+          <!-- Method 2: Rhythm (Vertical Card) -->
+          <div class="group relative md:col-span-1 md:row-span-2 bg-zinc-900 overflow-hidden rounded-sm border border-white/5">
+             <img src={images.drums} class="absolute inset-0 w-full h-full object-cover opacity-30 transition-transform duration-700 group-hover:scale-105" />
+             <div class="absolute inset-0 bg-black/60"></div>
+             <div class="relative h-full flex flex-col justify-between p-8">
+                <div>
+                    <div class="text-amber-400 text-xs font-bold uppercase tracking-widest mb-2">02. Groove</div>
+                    <h3 class="text-3xl mb-4">Rhythm</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        ハーフタイム、シンコペーション、フィルの変更。<br/>
+                        ピアノロール上で「隙間」を視覚的にデザインする。
+                    </p>
+                </div>
+                <div class="border-t border-white/10 pt-4">
+                     <Rating label="Difficulty" value={2} />
+                </div>
+             </div>
+          </div>
+
+          <!-- Method 3: Timbre (Standard Card) -->
+          <div class="group relative bg-zinc-900 overflow-hidden rounded-sm border border-white/5">
+            <div class="absolute inset-0 flex items-center justify-center text-[10rem] font-serif opacity-5 select-none text-white">¶</div>
+             <div class="relative p-8 h-full flex flex-col justify-end">
+                <div class="text-pink-400 text-xs font-bold uppercase tracking-widest mb-2">03. Color</div>
+                <h3 class="text-2xl mb-2">Timbre & Tone</h3>
+                <p class="text-gray-400 text-sm">楽器を変えるだけで、同じフレーズが別物に聞こえる。</p>
+             </div>
+          </div>
+
+          <!-- Method 4: Space (Standard Card with Image) -->
+          <div class="group relative bg-zinc-900 overflow-hidden rounded-sm border border-white/5">
+             <img src={images.mixer} class="absolute inset-0 w-full h-full object-cover opacity-20" />
+             <div class="relative p-8 h-full flex flex-col justify-end">
+                <div class="text-indigo-400 text-xs font-bold uppercase tracking-widest mb-2">04. Depth</div>
+                <h3 class="text-2xl mb-2">Space & FX</h3>
+                <p class="text-gray-400 text-sm">Pan, Reverb, Delayによる空間操作。プロっぽさの鍵。</p>
+                <div class="mt-4">
+                    <Rating label="Difficulty" value={5} />
+                </div>
+             </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Section 3: Actionable Tips (List Design) -->
+      <section class="py-24 bg-white text-black">
+        <div class="max-w-4xl mx-auto px-6">
+          <h2 class="text-5xl md:text-7xl font-serif mb-16 tracking-tighter">
+            Quick Recipes.
+          </h2>
+          
+          <div class="space-y-0">
+            <!-- List Items -->
+            {[
+              { id: "01", title: "Add Shaker/Perc to Chorus", desc: "サビでシェイカーかタンバリンを1本だけ足す" },
+              { id: "02", title: "Drop the Bass", desc: "Aメロでベースかドラムを思い切って抜く（マイナス・ワン）" },
+              { id: "03", title: "Half-time Feel", desc: "1セクションだけハーフテンポのリズムパターンにする" },
+              { id: "04", title: "Silence is Golden", desc: "キメの直前に1拍〜1小節の完全な休符（Silence）を作る" },
+            ].map((item) => (
+              <div class="group flex flex-col md:flex-row md:items-baseline border-b border-black/10 py-8 transition-all hover:bg-gray-50 -mx-4 px-4">
+                <span class="text-xs font-bold text-gray-400 w-16 mb-2 md:mb-0">/ {item.id}</span>
+                <h3 class="text-xl md:text-2xl font-bold md:w-1/2">{item.title}</h3>
+                <p class="text-gray-500 text-sm md:w-1/3 mt-2 md:mt-0 group-hover:text-black transition-colors">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div class="mt-16 text-center">
+            <a href="/music-theory-class-18/lessons/lesson21.html" class="inline-block bg-black text-white px-8 py-4 rounded-none uppercase tracking-widest text-xs hover:bg-emerald-600 transition-colors">
+              View Detailed Notes
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="bg-black text-white/30 py-12 text-center text-xs uppercase tracking-widest border-t border-white/10">
+        <p>&copy; 2025 NoViLholic Music Theory Class</p>
+      </footer>
 
     </main>
-
-    <footer
-      class="border-t border-white/10 py-10 text-center text-sm text-slate-400"
-    >
-      © 2025 NoViLholic
-    </footer>
   </body>
 </html>
