@@ -1,0 +1,223 @@
+---
+import "../../styles/tailwind.css";
+import SlideSection from "../../components/SlideSection.astro";
+import Stat from "../../components/Stat.astro";
+import Callout from "../../components/Callout.astro";
+import ExamplePair from "../../components/ExamplePair.astro";
+import ToggleAnswer from "../../components/ToggleAnswer.astro";
+import PatternCard from "../../components/PatternCard.astro";
+import ProgressBar from "../../components/ProgressBar.astro";
+
+const page = {
+  title: "第21回｜さまざまな編曲技法を紹介",
+  lead: "「パートを足すだけ」は卒業。最小限の変化で最大の効果を生む、4つの編曲アプローチと「引き算」の美学。",
+};
+
+// 難易度・効果を表示する小さなヘルパー（このファイル内のみで使用）
+const Rating = ({ label, value, max = 5 }) => (
+  <div class="flex items-center gap-2 text-sm">
+    <span class="text-slate-400 w-12">{label}</span>
+    <div class="flex gap-0.5">
+      {Array.from({ length: max }).map((_, i) => (
+        <div class={`h-2 w-4 rounded-sm ${i < value ? "bg-emerald-400" : "bg-slate-700"}`} />
+      ))}
+    </div>
+  </div>
+);
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{page.title}</title>
+  </head>
+  <body class="bg-animated text-white">
+    <!-- 暗幕オーバーレイ -->
+    <div class="fixed inset-0 -z-10 bg-black/70"></div>
+    <ProgressBar height="3px" />
+
+    <header class="border-b/0">
+      <div class="mx-auto max-w-5xl px-4 py-12">
+        <p class="text-xs uppercase tracking-wider text-slate-300">
+          Lesson 21
+        </p>
+        <h1 class="mt-2 text-4xl font-extrabold md:text-5xl">{page.title}</h1>
+        <p class="mt-4 max-w-3xl text-slate-200">{page.lead}</p>
+
+        <div class="mt-6 grid grid-cols-3 gap-3 md:max-w-xl">
+          <Stat value="4" label="変化の視点" />
+          <Stat value="6" label="即戦力テク" />
+          <Stat value="引く" label="重要概念" />
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a
+            class="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2 hover:bg-white/20 transition-colors"
+            href="/music-theory-class-18/lessons/lesson21.html"
+            >詳説を開く</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- ゴール -->
+      <SlideSection
+        id="goal"
+        eyebrow="Goal"
+        title="この授業の狙い"
+        icon="flag"
+        tone="emerald"
+      >
+        <Callout tone="tip">
+          <ul class="list-disc pl-5 space-y-2">
+            <li>
+              「伝えたいこと」が一番前に浮き出る<strong>編曲の優先順位</strong>をつかむ
+            </li>
+            <li>
+              変化をつけるための<strong>4つの操作（数・リズム・音・色）</strong>を整理する
+            </li>
+            <li>
+              「足す」だけでなく<strong>「引く・ずらす・変える」</strong>という選択肢を持つ
+            </li>
+          </ul>
+        </Callout>
+      </SlideSection>
+
+      <!-- 誤解と真実 -->
+      <SlideSection
+        id="concept"
+        eyebrow="Concept"
+        title="アレンジの誤解"
+        icon="lightbulb"
+        tone="amber"
+      >
+        <div class="grid gap-4 md:grid-cols-2">
+          <PatternCard
+            title="展開作り"
+            good="最小限の操作で効かせる"
+            pitfall="ガラッと変えないと不安"
+            fix="聞かせたいセクションをぶらさない変化量でOK"
+            icon="tune"
+          />
+          <PatternCard
+            title="盛り上げ方"
+            good="引く・変える・ずらす"
+            pitfall="パートをとにかく足す"
+            fix="音の隙間はパート追加以外でも埋められる"
+            icon="graphic_eq"
+          />
+        </div>
+      </SlideSection>
+
+      <!-- 4つの操作・詳細 -->
+      <SlideSection
+        id="methods"
+        eyebrow="Methods"
+        title="変化の4大要素"
+        icon="category"
+        tone="blue"
+      >
+        <p class="mb-6 text-slate-300">
+          理論上の分類ではなく、人間が「音が変わった」と感じる要素（音響的構成要素）をベースにした4つの操作方法です。
+        </p>
+
+        <div class="grid gap-6 md:grid-cols-2">
+          <!-- 1. パート数 -->
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+            <div class="mb-3 flex items-center justify-between">
+              <h3 class="flex items-center gap-2 text-lg font-bold text-emerald-300">
+                <span class="material-symbols-outlined">group_add</span> パート数の操作
+              </h3>
+            </div>
+            <div class="space-y-1 mb-4">
+              <Rating label="難易度" value={1} />
+              <Rating label="効果" value={4} />
+            </div>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              最もシンプルで強力。サビのアレンジを先に作り、そこから「引く」ことでコントラストを作るのが王道。
+            </p>
+          </div>
+
+          <!-- 2. リズム -->
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+             <div class="mb-3 flex items-center justify-between">
+              <h3 class="flex items-center gap-2 text-lg font-bold text-amber-300">
+                <span class="material-symbols-outlined">timer</span> リズムの操作
+              </h3>
+            </div>
+            <div class="space-y-1 mb-4">
+              <Rating label="難易度" value={2} />
+              <Rating label="効果" value={4} />
+            </div>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              ドラムフィルの変更、ハーフタイム、シンコペーションなど。ピアノロールで「隙間」を可視化して操作する。
+            </p>
+          </div>
+
+          <!-- 3. 音色 -->
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+             <div class="mb-3 flex items-center justify-between">
+              <h3 class="flex items-center gap-2 text-lg font-bold text-pink-300">
+                <span class="material-symbols-outlined">piano</span> 音色の操作
+              </h3>
+            </div>
+            <div class="space-y-1 mb-4">
+              <Rating label="難易度" value={3} />
+              <Rating label="効果" value={3} />
+            </div>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              同じフレーズでも楽器を変えるだけで耳に残る。セクションの空気感を壊さない「統一感」のある選定が鍵。
+            </p>
+          </div>
+
+          <!-- 4. 音符・空間 -->
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+             <div class="mb-3 flex items-center justify-between">
+              <h3 class="flex items-center gap-2 text-lg font-bold text-indigo-300">
+                <span class="material-symbols-outlined">queue_music</span> 音符・空間
+              </h3>
+            </div>
+            <div class="space-y-1 mb-4">
+              <Rating label="難易度" value={5} />
+              <Rating label="効果" value={4} />
+            </div>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              リハモ、裏メロ作成、パンニングやリバーブ操作。高難易度だが、ここができると「プロっぽさ」が出る。
+            </p>
+          </div>
+        </div>
+      </SlideSection>
+
+      <!-- すぐできるアイデア -->
+      <SlideSection
+        id="tips"
+        eyebrow="Tips"
+        title="すぐ使えるちょい足し"
+        icon="auto_fix_high"
+        tone="pink"
+      >
+        <div class="rounded-2xl bg-white/5 border border-white/10 overflow-hidden">
+            <ToggleAnswer title="今日から使える6つのアイデア" open={true}>
+                <ul class="list-decimal pl-5 space-y-3 text-slate-200">
+                    <li>サビで <strong>Perc（シェイカー等）</strong> を1〜2本足す</li>
+                    <li>Aメロで <strong>DrumかBass</strong> を思い切って抜く</li>
+                    <li>1セクションだけ <strong>ハーフリズム</strong> を採用する</li>
+                    <li>サビ2回しのメロディの <strong>リズムか音程だけ</strong> 変える</li>
+                    <li>キメ直前に <strong>1拍〜1小節の休符</strong> を作る</li>
+                    <li>聴かせたい言葉の前後に <strong>他パートを止めて「間」</strong> を作る</li>
+                </ul>
+            </ToggleAnswer>
+        </div>
+      </SlideSection>
+
+    </main>
+
+    <footer
+      class="border-t border-white/10 py-10 text-center text-sm text-slate-400"
+    >
+      © 2025 NoViLholic
+    </footer>
+  </body>
+</html>
