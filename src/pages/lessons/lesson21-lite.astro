@@ -1,7 +1,5 @@
 ---
 import "../../styles/tailwind.css";
-// 既存のコンポーネントはあえて使わず、全てこのファイル内でデザイン完結させます
-import Rating from "../../components/Rating.astro"; 
 
 const page = {
   title: "Arrangement Techniques",
@@ -10,17 +8,26 @@ const page = {
   date: "2025.11.20"
 };
 
-// 外部フォントの読み込み用URL
-const fontUrl = "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap";
+// 外部フォント（Inter & Playfair Display）
+const fontUrl = "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap";
 
-// 画像URL（Unsplashからランダムに取得。本番では差し替えてください）
+// 確実に表示される画像URL（Unsplash ID指定）
 const images = {
-  hero: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=2070&auto=format&fit=crop",
-  studio: "https://images.unsplash.com/photo-1598653222000-6b7b7a552625?q=80&w=2070&auto=format&fit=crop",
-  drums: "https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?q=80&w=1000&auto=format&fit=crop",
-  piano: "https://images.unsplash.com/photo-1552422535-c45813c61732?q=80&w=1000&auto=format&fit=crop",
-  mixer: "https://images.unsplash.com/photo-1558584673-c84523dd228c?q=80&w=1000&auto=format&fit=crop",
+  hero: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+  studio: "https://images.unsplash.com/photo-1598653222000-6b7b7a552625?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+  drums: "https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+  synth: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+  space: "https://images.unsplash.com/photo-1516280440614-6697288d5d38?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
 };
+
+// このデザイン専用の評価バー（崩れ防止のためコンポーネント化せずここに記述）
+const MiniBar = ({ val, max = 5 }) => (
+  <div class="flex gap-1 mt-1">
+    {Array.from({ length: max }).map((_, i) => (
+      <div class={`h-1 w-6 rounded-full ${i < val ? "bg-white" : "bg-white/10"}`} />
+    ))}
+  </div>
+);
 ---
 
 <html lang="ja" class="scroll-smooth">
@@ -28,151 +35,169 @@ const images = {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>{page.title} | {page.subtitle}</title>
-    <!-- Google Fonts Import -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href={fontUrl} rel="stylesheet">
     
     <style>
-      /* 基本フォント設定 */
       body {
         font-family: 'Inter', sans-serif;
-        background-color: #050505; /* Deep Black */
+        background-color: #050505;
         color: #e5e5e5;
       }
       h1, h2, h3, .serif {
         font-family: 'Playfair Display', serif;
       }
-      /* スクロールバー装飾（Chrome/Safari） */
-      ::-webkit-scrollbar { width: 8px; }
-      ::-webkit-scrollbar-track { background: #111; }
-      ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+      /* 画像に薄いノイズを乗せるエフェクト */
+      .bg-noise {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+      }
     </style>
   </head>
   
-  <body class="antialiased selection:bg-white selection:text-black">
+  <body class="antialiased selection:bg-emerald-500 selection:text-white">
     
-    <!-- Navigation (Minimal) -->
+    <!-- Nav -->
     <nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-6 mix-blend-difference text-white">
-      <span class="text-sm tracking-widest uppercase font-bold">{page.subtitle}</span>
-      <a href="/music-theory-class-18/lessons/lesson21.html" class="text-xs border border-white/40 px-4 py-2 rounded-full hover:bg-white hover:text-black transition-all duration-300">
-        READ FULL NOTE
+      <span class="text-xs font-bold tracking-[0.2em] uppercase">{page.subtitle}</span>
+      <a href="/music-theory-class-18/lessons/lesson21.html" class="text-[10px] uppercase tracking-widest border border-white/30 px-4 py-2 rounded-full hover:bg-white hover:text-black transition-all duration-300">
+        Full Note
       </a>
     </nav>
 
     <main>
-      <!-- Hero Section -->
-      <section class="relative h-screen w-full flex flex-col justify-center items-center overflow-hidden">
-        <!-- Background Image with Parallax-like feel via object-cover -->
+      <!-- Hero -->
+      <section class="relative h-[90vh] w-full flex flex-col justify-center items-center overflow-hidden">
         <div class="absolute inset-0 z-0">
-          <img src={images.hero} alt="Studio" class="w-full h-full object-cover opacity-60 grayscale-[30%]" />
-          <div class="absolute inset-0 bg-black/40"></div>
+          <img src={images.hero} alt="Studio" class="w-full h-full object-cover opacity-50 grayscale-[20%]" />
+          <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/50 to-[#050505]"></div>
+          <div class="absolute inset-0 bg-noise pointer-events-none"></div>
         </div>
 
-        <div class="relative z-10 text-center px-4">
-          <p class="text-emerald-400 tracking-[0.3em] text-xs md:text-sm uppercase mb-4 animate-fade-in-up">The Art of Production</p>
-          <h1 class="text-5xl md:text-8xl font-medium tracking-tight leading-tight mb-6 mix-blend-overlay opacity-90">
+        <div class="relative z-10 text-center px-6 mt-10">
+          <p class="text-emerald-400 tracking-[0.3em] text-xs font-bold uppercase mb-6">Music Theory Class</p>
+          <h1 class="text-6xl md:text-9xl font-medium tracking-tight leading-[0.9] mb-8 mix-blend-overlay opacity-90">
             ARRANGE<br/><i class="font-thin">MENT</i>
           </h1>
           <p class="max-w-md mx-auto text-sm md:text-base text-gray-300 font-light leading-relaxed">
-            {page.lead}<br/>
-            <span class="text-xs text-gray-500 mt-2 block">Minimal changes for maximum emotional impact.</span>
+            {page.lead}
           </p>
         </div>
         
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 animate-bounce">
-          <span class="material-symbols-outlined text-white/50 text-3xl">arrow_downward</span>
+        <!-- SVG Arrow (修正: 文字ではなくSVG描画に変更) -->
+        <div class="absolute bottom-12 animate-bounce opacity-50">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <polyline points="19 12 12 19 5 12"></polyline>
+          </svg>
         </div>
       </section>
 
-      <!-- Section 1: Introduction (Typographic Layout) -->
-      <section class="py-24 px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
-        <div class="md:col-span-4">
-          <h2 class="text-3xl md:text-5xl leading-tight">
+      <!-- Intro -->
+      <section class="py-20 px-6 md:px-12 max-w-7xl mx-auto">
+        <div class="border-l-2 border-emerald-500/50 pl-6 md:pl-12 py-2">
+          <h2 class="text-2xl md:text-5xl leading-tight mb-6">
             Don't add.<br/>
             <span class="italic text-emerald-500">Just shift.</span>
           </h2>
-        </div>
-        <div class="md:col-span-8 space-y-8">
-          <p class="text-lg md:text-xl text-gray-400 font-light border-l border-emerald-500/50 pl-6">
-            「セクションが変わったらガラッと変えなきゃ」「音を足さなきゃ」
-            <br/><span class="text-white">その思い込みを捨てましょう。</span>
+          <p class="text-gray-400 text-sm md:text-lg max-w-2xl leading-relaxed">
+            「セクションが変わったらガラッと変えなきゃ」「音を足さなきゃ」その思い込みを捨てましょう。
+            音の隙間は「空間」や「リズム」でも埋められます。
           </p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-gray-500">
-            <div>
-              <strong class="block text-white mb-2 uppercase tracking-wide text-xs">Misconception</strong>
-              パートを足し続けることがアレンジではない。音の隙間は「空間」や「リズム」でも埋められる。
-            </div>
-            <div>
-              <strong class="block text-white mb-2 uppercase tracking-wide text-xs">Solution</strong>
-              「引く・変える・ずらす」。聞かせたいセクションをブレさせないための、最小限の操作を知る。
-            </div>
-          </div>
         </div>
       </section>
 
-      <!-- Section 2: The 4 Methods (Bento Grid Layout) -->
+      <!-- 4 Methods (Bento Grid) -->
       <section class="py-12 px-4 md:px-8 max-w-screen-2xl mx-auto">
-        <div class="flex items-end justify-between mb-10 px-2">
-            <h2 class="text-xs font-bold uppercase tracking-widest text-gray-500">01 -- Methods</h2>
-            <p class="serif italic text-2xl md:text-3xl">4 Core Elements</p>
+        <div class="flex items-end justify-between mb-8 px-2">
+            <h2 class="text-[10px] font-bold uppercase tracking-widest text-gray-500">01 — Methods</h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4 h-auto md:h-[800px]">
+        <!-- 
+          修正: grid-cols-1 (スマホ) -> md:grid-cols-3 (PC) 
+          スマホでは縦に積まれ、PCではお弁当箱レイアウトになる設定
+        -->
+        <div class="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4">
           
-          <!-- Method 1: Count (Large Card) -->
-          <div class="group relative md:col-span-2 md:row-span-1 bg-zinc-900 overflow-hidden rounded-sm border border-white/5">
+          <!-- 1. Quantity (Big Card) -->
+          <div class="group relative md:col-span-2 md:row-span-1 bg-zinc-900 rounded-sm overflow-hidden min-h-[300px] md:min-h-[auto]">
             <img src={images.studio} class="absolute inset-0 w-full h-full object-cover opacity-40 transition-transform duration-700 group-hover:scale-105" />
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 p-8">
-                <div class="text-emerald-400 text-xs font-bold uppercase tracking-widest mb-2">01. Quantity</div>
-                <h3 class="text-3xl md:text-4xl mb-2">Part Counting</h3>
-                <p class="text-gray-400 text-sm max-w-lg mb-4">パート数の足し引き。サビを作ってから「引く」のが王道。</p>
-                <div class="bg-black/80 backdrop-blur-md inline-block px-4 py-2 rounded-full border border-white/10">
-                    <Rating label="Effect" value={4} />
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+            
+            <div class="absolute bottom-0 left-0 p-6 md:p-8 w-full">
+                <div class="flex justify-between items-end">
+                    <div>
+                        <div class="text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-2">01. Quantity</div>
+                        <h3 class="text-3xl md:text-4xl mb-2">Part Counting</h3>
+                        <p class="text-gray-400 text-xs md:text-sm max-w-md mb-4 leading-relaxed">
+                           サビを作ってから「引く」のが王道。<br class="hidden md:block"/>
+                           パート数の増減だけでコントラストを作る。
+                        </p>
+                    </div>
+                    <!-- 修正: 独自のMiniBarで崩れ防止 -->
+                    <div class="text-right hidden md:block">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider">Effect</span>
+                        <MiniBar val={4} />
+                    </div>
                 </div>
             </div>
           </div>
 
-          <!-- Method 2: Rhythm (Vertical Card) -->
-          <div class="group relative md:col-span-1 md:row-span-2 bg-zinc-900 overflow-hidden rounded-sm border border-white/5">
+          <!-- 2. Rhythm (Tall Card) -->
+          <div class="group relative md:col-span-1 md:row-span-2 bg-zinc-900 rounded-sm overflow-hidden min-h-[400px]">
              <img src={images.drums} class="absolute inset-0 w-full h-full object-cover opacity-30 transition-transform duration-700 group-hover:scale-105" />
-             <div class="absolute inset-0 bg-black/60"></div>
-             <div class="relative h-full flex flex-col justify-between p-8">
+             <div class="absolute inset-0 bg-black/50"></div>
+             
+             <div class="relative h-full flex flex-col justify-between p-6 md:p-8">
                 <div>
-                    <div class="text-amber-400 text-xs font-bold uppercase tracking-widest mb-2">02. Groove</div>
+                    <div class="text-amber-400 text-[10px] font-bold uppercase tracking-widest mb-2">02. Groove</div>
                     <h3 class="text-3xl mb-4">Rhythm</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">
-                        ハーフタイム、シンコペーション、フィルの変更。<br/>
+                        ハーフタイム、シンコペーション。<br/>
                         ピアノロール上で「隙間」を視覚的にデザインする。
                     </p>
                 </div>
-                <div class="border-t border-white/10 pt-4">
-                     <Rating label="Difficulty" value={2} />
+                <!-- 修正: 表示位置を調整 -->
+                <div class="border-t border-white/10 pt-4 mt-4">
+                     <div class="flex justify-between items-center">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider">Difficulty</span>
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider">Effect</span>
+                     </div>
+                     <div class="flex justify-between items-center mt-1">
+                        <MiniBar val={2} />
+                        <MiniBar val={4} />
+                     </div>
                 </div>
              </div>
           </div>
 
-          <!-- Method 3: Timbre (Standard Card) -->
-          <div class="group relative bg-zinc-900 overflow-hidden rounded-sm border border-white/5">
-            <div class="absolute inset-0 flex items-center justify-center text-[10rem] font-serif opacity-5 select-none text-white">¶</div>
-             <div class="relative p-8 h-full flex flex-col justify-end">
-                <div class="text-pink-400 text-xs font-bold uppercase tracking-widest mb-2">03. Color</div>
-                <h3 class="text-2xl mb-2">Timbre & Tone</h3>
-                <p class="text-gray-400 text-sm">楽器を変えるだけで、同じフレーズが別物に聞こえる。</p>
+          <!-- 3. Timbre (Card with Image) -->
+          <div class="group relative bg-zinc-900 rounded-sm overflow-hidden min-h-[250px]">
+             <!-- 修正: 画像を追加 -->
+             <img src={images.synth} class="absolute inset-0 w-full h-full object-cover opacity-30 transition-transform duration-700 group-hover:scale-105" />
+             <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+             
+             <div class="relative p-6 md:p-8 h-full flex flex-col justify-end">
+                <div class="text-pink-400 text-[10px] font-bold uppercase tracking-widest mb-2">03. Color</div>
+                <h3 class="text-2xl mb-1">Timbre</h3>
+                <p class="text-gray-400 text-xs">楽器を変えるだけで、同じフレーズが別物に。</p>
              </div>
           </div>
 
-          <!-- Method 4: Space (Standard Card with Image) -->
-          <div class="group relative bg-zinc-900 overflow-hidden rounded-sm border border-white/5">
-             <img src={images.mixer} class="absolute inset-0 w-full h-full object-cover opacity-20" />
-             <div class="relative p-8 h-full flex flex-col justify-end">
-                <div class="text-indigo-400 text-xs font-bold uppercase tracking-widest mb-2">04. Depth</div>
-                <h3 class="text-2xl mb-2">Space & FX</h3>
-                <p class="text-gray-400 text-sm">Pan, Reverb, Delayによる空間操作。プロっぽさの鍵。</p>
-                <div class="mt-4">
-                    <Rating label="Difficulty" value={5} />
+          <!-- 4. Space (Card with Image) -->
+          <div class="group relative bg-zinc-900 rounded-sm overflow-hidden min-h-[250px]">
+             <!-- 修正: 画像を追加 -->
+             <img src={images.space} class="absolute inset-0 w-full h-full object-cover opacity-30 transition-transform duration-700 group-hover:scale-105" />
+             <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+             
+             <div class="relative p-6 md:p-8 h-full flex flex-col justify-end">
+                <div class="text-indigo-400 text-[10px] font-bold uppercase tracking-widest mb-2">04. Depth</div>
+                <h3 class="text-2xl mb-1">Space & FX</h3>
+                <p class="text-gray-400 text-xs">Pan, Reverb操作。プロっぽさの鍵。</p>
+                <div class="mt-4 flex items-center gap-3">
+                    <span class="text-[10px] text-gray-500 uppercase">Diff</span>
+                    <MiniBar val={5} />
                 </div>
              </div>
           </div>
@@ -180,31 +205,30 @@ const images = {
         </div>
       </section>
 
-      <!-- Section 3: Actionable Tips (List Design) -->
-      <section class="py-24 bg-white text-black">
+      <!-- Action List -->
+      <section class="py-24 bg-[#0a0a0a]">
         <div class="max-w-4xl mx-auto px-6">
-          <h2 class="text-5xl md:text-7xl font-serif mb-16 tracking-tighter">
+          <h2 class="text-4xl md:text-6xl font-serif mb-12">
             Quick Recipes.
           </h2>
           
           <div class="space-y-0">
-            <!-- List Items -->
             {[
-              { id: "01", title: "Add Shaker/Perc to Chorus", desc: "サビでシェイカーかタンバリンを1本だけ足す" },
-              { id: "02", title: "Drop the Bass", desc: "Aメロでベースかドラムを思い切って抜く（マイナス・ワン）" },
-              { id: "03", title: "Half-time Feel", desc: "1セクションだけハーフテンポのリズムパターンにする" },
-              { id: "04", title: "Silence is Golden", desc: "キメの直前に1拍〜1小節の完全な休符（Silence）を作る" },
+              { id: "01", title: "Add Shaker/Perc to Chorus", desc: "サビでシェイカーを1本だけ足す" },
+              { id: "02", title: "Drop the Bass", desc: "AメロでBass/Drumを抜く" },
+              { id: "03", title: "Half-time Feel", desc: "1セクションだけハーフにする" },
+              { id: "04", title: "Silence is Golden", desc: "キメ直前に1拍の休符を作る" },
             ].map((item) => (
-              <div class="group flex flex-col md:flex-row md:items-baseline border-b border-black/10 py-8 transition-all hover:bg-gray-50 -mx-4 px-4">
-                <span class="text-xs font-bold text-gray-400 w-16 mb-2 md:mb-0">/ {item.id}</span>
-                <h3 class="text-xl md:text-2xl font-bold md:w-1/2">{item.title}</h3>
-                <p class="text-gray-500 text-sm md:w-1/3 mt-2 md:mt-0 group-hover:text-black transition-colors">{item.desc}</p>
+              <div class="group flex flex-col md:flex-row md:items-baseline border-b border-white/10 py-6 transition-all hover:pl-4">
+                <span class="text-[10px] font-bold text-emerald-500 w-12 mb-2 md:mb-0">/{item.id}</span>
+                <h3 class="text-xl md:text-2xl font-medium md:w-1/2 group-hover:text-emerald-400 transition-colors">{item.title}</h3>
+                <p class="text-gray-500 text-xs md:w-1/3 mt-1 md:mt-0">{item.desc}</p>
               </div>
             ))}
           </div>
 
           <div class="mt-16 text-center">
-            <a href="/music-theory-class-18/lessons/lesson21.html" class="inline-block bg-black text-white px-8 py-4 rounded-none uppercase tracking-widest text-xs hover:bg-emerald-600 transition-colors">
+            <a href="/music-theory-class-18/lessons/lesson21.html" class="inline-block border border-white/20 px-8 py-3 rounded-full text-[10px] uppercase tracking-widest hover:bg-white hover:text-black transition-colors">
               View Detailed Notes
             </a>
           </div>
@@ -212,7 +236,7 @@ const images = {
       </section>
 
       <!-- Footer -->
-      <footer class="bg-black text-white/30 py-12 text-center text-xs uppercase tracking-widest border-t border-white/10">
+      <footer class="py-12 text-center text-[10px] text-gray-600 uppercase tracking-widest">
         <p>&copy; 2025 NoViLholic Music Theory Class</p>
       </footer>
 
