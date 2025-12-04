@@ -1,11 +1,13 @@
 ---
 import "../../styles/tailwind.css";
+// 作成したコンポーネントを読み込み
+import MiniBar from "../../components/MiniBar.astro";
 
 const page = {
   title: "Arrangement Techniques",
   subtitle: "Lesson 21",
   lead: "Simple changes, Maximum impact.",
-  date: "2025.11.20"
+  date: "2025.12.06"
 };
 
 // 外部フォント（Inter & Playfair Display）
@@ -19,15 +21,6 @@ const images = {
   synth: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
   space: "https://images.unsplash.com/photo-1516280440614-6697288d5d38?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
 };
-
-// このデザイン専用の評価バー（崩れ防止のためコンポーネント化せずここに記述）
-const MiniBar = ({ val, max = 5 }) => (
-  <div class="flex gap-1 mt-1">
-    {Array.from({ length: max }).map((_, i) => (
-      <div class={`h-1 w-6 rounded-full ${i < val ? "bg-white" : "bg-white/10"}`} />
-    ))}
-  </div>
-);
 ---
 
 <html lang="ja" class="scroll-smooth">
@@ -85,7 +78,7 @@ const MiniBar = ({ val, max = 5 }) => (
           </p>
         </div>
         
-        <!-- SVG Arrow (修正: 文字ではなくSVG描画に変更) -->
+        <!-- SVG Arrow -->
         <div class="absolute bottom-12 animate-bounce opacity-50">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -114,13 +107,10 @@ const MiniBar = ({ val, max = 5 }) => (
             <h2 class="text-[10px] font-bold uppercase tracking-widest text-gray-500">01 — Methods</h2>
         </div>
 
-        <!-- 
-          修正: grid-cols-1 (スマホ) -> md:grid-cols-3 (PC) 
-          スマホでは縦に積まれ、PCではお弁当箱レイアウトになる設定
-        -->
+        <!-- Grid Layout -->
         <div class="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4">
           
-          <!-- 1. Quantity (Big Card) -->
+          <!-- 1. Quantity -->
           <div class="group relative md:col-span-2 md:row-span-1 bg-zinc-900 rounded-sm overflow-hidden min-h-[300px] md:min-h-[auto]">
             <img src={images.studio} class="absolute inset-0 w-full h-full object-cover opacity-40 transition-transform duration-700 group-hover:scale-105" />
             <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
@@ -135,7 +125,6 @@ const MiniBar = ({ val, max = 5 }) => (
                            パート数の増減だけでコントラストを作る。
                         </p>
                     </div>
-                    <!-- 修正: 独自のMiniBarで崩れ防止 -->
                     <div class="text-right hidden md:block">
                         <span class="text-[10px] text-gray-500 uppercase tracking-wider">Effect</span>
                         <MiniBar val={4} />
@@ -144,7 +133,7 @@ const MiniBar = ({ val, max = 5 }) => (
             </div>
           </div>
 
-          <!-- 2. Rhythm (Tall Card) -->
+          <!-- 2. Rhythm -->
           <div class="group relative md:col-span-1 md:row-span-2 bg-zinc-900 rounded-sm overflow-hidden min-h-[400px]">
              <img src={images.drums} class="absolute inset-0 w-full h-full object-cover opacity-30 transition-transform duration-700 group-hover:scale-105" />
              <div class="absolute inset-0 bg-black/50"></div>
@@ -158,7 +147,6 @@ const MiniBar = ({ val, max = 5 }) => (
                         ピアノロール上で「隙間」を視覚的にデザインする。
                     </p>
                 </div>
-                <!-- 修正: 表示位置を調整 -->
                 <div class="border-t border-white/10 pt-4 mt-4">
                      <div class="flex justify-between items-center">
                         <span class="text-[10px] text-gray-500 uppercase tracking-wider">Difficulty</span>
@@ -172,9 +160,8 @@ const MiniBar = ({ val, max = 5 }) => (
              </div>
           </div>
 
-          <!-- 3. Timbre (Card with Image) -->
+          <!-- 3. Timbre -->
           <div class="group relative bg-zinc-900 rounded-sm overflow-hidden min-h-[250px]">
-             <!-- 修正: 画像を追加 -->
              <img src={images.synth} class="absolute inset-0 w-full h-full object-cover opacity-30 transition-transform duration-700 group-hover:scale-105" />
              <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
              
@@ -185,9 +172,8 @@ const MiniBar = ({ val, max = 5 }) => (
              </div>
           </div>
 
-          <!-- 4. Space (Card with Image) -->
+          <!-- 4. Space -->
           <div class="group relative bg-zinc-900 rounded-sm overflow-hidden min-h-[250px]">
-             <!-- 修正: 画像を追加 -->
              <img src={images.space} class="absolute inset-0 w-full h-full object-cover opacity-30 transition-transform duration-700 group-hover:scale-105" />
              <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
              
