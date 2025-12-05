@@ -1,25 +1,28 @@
 ---
 import "../../styles/tailwind.css";
-// 作成したコンポーネントを読み込み
 import MiniBar from "../../components/MiniBar.astro";
 
 const page = {
   title: "Arrangement Techniques",
   subtitle: "Lesson 21",
   lead: "Simple changes, Maximum impact.",
-  date: "2025.12.06"
+  date: "2025.12.05"
 };
 
-// 外部フォント（Inter & Playfair Display）
+// 外部フォント
 const fontUrl = "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap";
 
-// 確実に表示される画像URL（Unsplash ID指定）
+// 画像URL
 const images = {
   hero: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+  // 1. Quantity: スタジオ全景
   studio: "https://images.unsplash.com/photo-1598653222000-6b7b7a552625?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+  // 2. Rhythm: ドラムセット
   drums: "https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-  synth: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-  space: "https://images.unsplash.com/photo-1516280440614-6697288d5d38?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+  // 3. Timbre: シンセサイザー（色鮮やか）
+  synth: "https://images.unsplash.com/photo-1550291652-6ea9114a47b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+  // 4. Depth: スピーカー/奥行き（変更しました）
+  depth: "https://images.unsplash.com/photo-1516280440614-6697288d5d38?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
 };
 ---
 
@@ -28,7 +31,7 @@ const images = {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>{page.title} | {page.subtitle}</title>
-    <!-- Google Fonts -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href={fontUrl} rel="stylesheet">
@@ -42,7 +45,6 @@ const images = {
       h1, h2, h3, .serif {
         font-family: 'Playfair Display', serif;
       }
-      /* 画像に薄いノイズを乗せるエフェクト */
       .bg-noise {
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
       }
@@ -78,7 +80,7 @@ const images = {
           </p>
         </div>
         
-        <!-- SVG Arrow -->
+        <!-- Arrow -->
         <div class="absolute bottom-12 animate-bounce opacity-50">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -94,8 +96,10 @@ const images = {
             Don't add.<br/>
             <span class="italic text-emerald-500">Just shift.</span>
           </h2>
+          <!-- 改行位置を調整 -->
           <p class="text-gray-400 text-sm md:text-lg max-w-2xl leading-relaxed">
-            「セクションが変わったらガラッと変えなきゃ」「音を足さなきゃ」その思い込みを捨てましょう。
+            「セクションが変わったらガラッと変えなきゃ」「音を足さなきゃ」<br class="hidden md:inline" />
+            その思い込みを捨てましょう。<br class="hidden md:inline" />
             音の隙間は「空間」や「リズム」でも埋められます。
           </p>
         </div>
@@ -107,28 +111,33 @@ const images = {
             <h2 class="text-[10px] font-bold uppercase tracking-widest text-gray-500">01 — Methods</h2>
         </div>
 
-        <!-- Grid Layout -->
         <div class="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4">
           
-          <!-- 1. Quantity -->
-          <div class="group relative md:col-span-2 md:row-span-1 bg-zinc-900 rounded-sm overflow-hidden min-h-[300px] md:min-h-[auto]">
+          <!-- 1. Quantity (Part Counting) -->
+          <div class="group relative md:col-span-2 md:row-span-1 bg-zinc-900 rounded-sm overflow-hidden min-h-[320px] md:min-h-[auto]">
             <img src={images.studio} class="absolute inset-0 w-full h-full object-cover opacity-40 transition-transform duration-700 group-hover:scale-105" />
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
             
-            <div class="absolute bottom-0 left-0 p-6 md:p-8 w-full">
-                <div class="flex justify-between items-end">
-                    <div>
-                        <div class="text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-2">01. Quantity</div>
-                        <h3 class="text-3xl md:text-4xl mb-2">Part Counting</h3>
-                        <p class="text-gray-400 text-xs md:text-sm max-w-md mb-4 leading-relaxed">
-                           サビを作ってから「引く」のが王道。<br class="hidden md:block"/>
-                           パート数の増減だけでコントラストを作る。
-                        </p>
-                    </div>
-                    <div class="text-right hidden md:block">
+            <div class="relative h-full flex flex-col justify-between p-6 md:p-8">
+                <!-- 上部: タイトル -->
+                <div>
+                    <div class="text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-2">01. Quantity</div>
+                    <h3 class="text-3xl md:text-4xl mb-2">Part Counting</h3>
+                    <p class="text-gray-400 text-xs md:text-sm max-w-md leading-relaxed">
+                       サビを作ってから「引く」のが王道。<br class="hidden md:block"/>
+                       パート数の増減だけでコントラストを作る。
+                    </p>
+                </div>
+                <!-- 下部: 共通UI (Diff 1, Eff 4) -->
+                <div class="border-t border-white/10 pt-4 mt-auto">
+                     <div class="flex justify-between items-center">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider">Difficulty</span>
                         <span class="text-[10px] text-gray-500 uppercase tracking-wider">Effect</span>
+                     </div>
+                     <div class="flex justify-between items-center mt-1">
+                        <MiniBar val={1} />
                         <MiniBar val={4} />
-                    </div>
+                     </div>
                 </div>
             </div>
           </div>
@@ -147,6 +156,7 @@ const images = {
                         ピアノロール上で「隙間」を視覚的にデザインする。
                     </p>
                 </div>
+                <!-- 共通UI (Diff 2, Eff 4) -->
                 <div class="border-t border-white/10 pt-4 mt-4">
                      <div class="flex justify-between items-center">
                         <span class="text-[10px] text-gray-500 uppercase tracking-wider">Difficulty</span>
@@ -161,29 +171,52 @@ const images = {
           </div>
 
           <!-- 3. Timbre -->
-          <div class="group relative bg-zinc-900 rounded-sm overflow-hidden min-h-[250px]">
+          <div class="group relative bg-zinc-900 rounded-sm overflow-hidden min-h-[320px]">
              <img src={images.synth} class="absolute inset-0 w-full h-full object-cover opacity-30 transition-transform duration-700 group-hover:scale-105" />
-             <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+             <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
              
-             <div class="relative p-6 md:p-8 h-full flex flex-col justify-end">
-                <div class="text-pink-400 text-[10px] font-bold uppercase tracking-widest mb-2">03. Color</div>
-                <h3 class="text-2xl mb-1">Timbre</h3>
-                <p class="text-gray-400 text-xs">楽器を変えるだけで、同じフレーズが別物に。</p>
+             <div class="relative p-6 md:p-8 h-full flex flex-col justify-between">
+                <div>
+                    <div class="text-pink-400 text-[10px] font-bold uppercase tracking-widest mb-2">03. Color</div>
+                    <h3 class="text-2xl mb-1">Timbre</h3>
+                    <p class="text-gray-400 text-xs mt-2">楽器を変えるだけで、同じフレーズが別物に。</p>
+                </div>
+                <!-- 共通UI (Diff 3, Eff 3) -->
+                <div class="border-t border-white/10 pt-4 mt-auto">
+                     <div class="flex justify-between items-center">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider">Difficulty</span>
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider">Effect</span>
+                     </div>
+                     <div class="flex justify-between items-center mt-1">
+                        <MiniBar val={3} />
+                        <MiniBar val={3} />
+                     </div>
+                </div>
              </div>
           </div>
 
-          <!-- 4. Space -->
-          <div class="group relative bg-zinc-900 rounded-sm overflow-hidden min-h-[250px]">
-             <img src={images.space} class="absolute inset-0 w-full h-full object-cover opacity-30 transition-transform duration-700 group-hover:scale-105" />
-             <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+          <!-- 4. Depth (Space) -->
+          <div class="group relative bg-zinc-900 rounded-sm overflow-hidden min-h-[320px]">
+             <!-- 画像を修正 -->
+             <img src={images.depth} class="absolute inset-0 w-full h-full object-cover opacity-40 transition-transform duration-700 group-hover:scale-105" />
+             <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
              
-             <div class="relative p-6 md:p-8 h-full flex flex-col justify-end">
-                <div class="text-indigo-400 text-[10px] font-bold uppercase tracking-widest mb-2">04. Depth</div>
-                <h3 class="text-2xl mb-1">Space & FX</h3>
-                <p class="text-gray-400 text-xs">Pan, Reverb操作。プロっぽさの鍵。</p>
-                <div class="mt-4 flex items-center gap-3">
-                    <span class="text-[10px] text-gray-500 uppercase">Diff</span>
-                    <MiniBar val={5} />
+             <div class="relative p-6 md:p-8 h-full flex flex-col justify-between">
+                <div>
+                    <div class="text-indigo-400 text-[10px] font-bold uppercase tracking-widest mb-2">04. Depth</div>
+                    <h3 class="text-2xl mb-1">Space & FX</h3>
+                    <p class="text-gray-400 text-xs mt-2">Pan, Reverb操作。プロっぽさの鍵。</p>
+                </div>
+                <!-- 共通UI (Diff 5, Eff 4) -->
+                <div class="border-t border-white/10 pt-4 mt-auto">
+                     <div class="flex justify-between items-center">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider">Difficulty</span>
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider">Effect</span>
+                     </div>
+                     <div class="flex justify-between items-center mt-1">
+                        <MiniBar val={5} />
+                        <MiniBar val={4} />
+                     </div>
                 </div>
              </div>
           </div>
