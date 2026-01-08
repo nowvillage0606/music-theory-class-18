@@ -15,3 +15,8 @@
 詳細版は[ここから](https://nowvillage0606.github.io/music-theory-class-18/lessons/lesson21-lite.html)
 
 簡易版は[ここから](https://nowvillage0606.github.io/music-theory-class-18/lessons/lesson21.html)
+
+## 第22回
+詳細版は[ここから](https://nowvillage0606.github.io/music-theory-class-18/lessons/lesson21-lite.html)
+
+簡易版は[ここから](https://nowvillage0606.github.io/music-theory-class-18/lessons/lesson21.html)
