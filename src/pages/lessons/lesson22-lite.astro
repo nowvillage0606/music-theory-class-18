@@ -1,0 +1,244 @@
+---
+import "../../styles/tailwind.css";
+import MiniBar from "../../components/MiniBar.astro";
+
+const page = {
+  title: "Thinking in the Age of AI",
+  subtitle: "Lesson 22",
+  lead: "AIは思考を奪うのか、それとも加速させるのか。",
+  date: "2026.01.08"
+};
+
+const fontUrl = "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap";
+
+const images = {
+  hero: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2000&auto=format&fit=crop", // Abstract AI Brain
+  mit: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?q=80&w=1000&auto=format&fit=crop", // Library/Study
+  writing: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1000&auto=format&fit=crop", // Writing/Productivity
+  diversity: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1000&auto=format&fit=crop", // Crowd/Homogenization
+};
+---
+
+<html lang="ja" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{page.title} | {page.subtitle}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href={fontUrl} rel="stylesheet">
+    
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #050505;
+        color: #e5e5e5;
+      }
+      h1, h2, h3, .serif {
+        font-family: 'Playfair Display', serif;
+      }
+      .bg-noise {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+      }
+    </style>
+  </head>
+  
+  <body class="antialiased selection:bg-indigo-500 selection:text-white">
+    
+    <nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-6 mix-blend-difference text-white">
+      <span class="text-xs font-bold tracking-[0.2em] uppercase">{page.subtitle}</span>
+      <a href="/music-theory-class-18/lessons/lesson22.html" class="text-[10px] uppercase tracking-widest border border-white/30 px-4 py-2 rounded-full hover:bg-white hover:text-black transition-all duration-300">
+        Full Note
+      </a>
+    </nav>
+
+    <main>
+      <!-- Hero Section -->
+      <section class="relative h-[90vh] w-full flex flex-col justify-center items-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+          <img src={images.hero} alt="AI Neural Network" class="w-full h-full object-cover opacity-40 grayscale-[40%]" />
+          <div class="absolute inset-0 bg-gradient-to-b from-[#050505]/30 via-[#050505]/60 to-[#050505]"></div>
+          <div class="absolute inset-0 bg-noise pointer-events-none"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-6 mt-10">
+          <p class="text-indigo-400 tracking-[0.3em] text-[10px] font-bold uppercase mb-6 animate-pulse">Special Edition</p>
+          <h1 class="text-5xl md:text-8xl font-medium tracking-tight leading-[0.9] mb-8 mix-blend-overlay opacity-90">
+            THINKING<br/><i class="font-thin text-emerald-200">AGENCY</i>
+          </h1>
+          <p class="max-w-md mx-auto text-sm md:text-base text-gray-300 font-light leading-relaxed">
+            {page.lead}<br/>
+            <span class="text-[10px] text-gray-500 mt-2 block tracking-widest uppercase">Deep Think / Multimodal / Agents</span>
+          </p>
+        </div>
+        
+        <div class="absolute bottom-12 opacity-50">
+          <span class="text-[10px] tracking-widest uppercase text-gray-500">Scroll to Explore</span>
+        </div>
+      </section>
+
+      <!-- Context: 2025 History -->
+      <section class="py-20 px-6 md:px-12 max-w-7xl mx-auto">
+        <div class="border-l-2 border-indigo-500/50 pl-6 md:pl-12 py-2">
+          <h2 class="text-2xl md:text-4xl leading-tight mb-6 serif">
+            2025: The Year of<br/>
+            <span class="italic text-indigo-400">"Reasoning"</span>
+          </h2>
+          <div class="space-y-4 text-gray-400 text-sm md:text-base max-w-2xl leading-relaxed">
+            <p>
+              DeepSeek-R1の登場から始まった「推論強化」の流れ。
+              AIは単なる回答マシンから、自ら問いを立て、検討し、行動する「エージェント」へと進化した。
+            </p>
+            <p class="text-white">
+              便利になる一方で、我々の思考はどうなる？<br/>
+              道具に使われるか、道具を使いこなすか。その分岐点に我々はいる。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- The Conflict (Bento Grid) -->
+      <section class="py-12 px-4 md:px-8 max-w-screen-2xl mx-auto">
+        <div class="flex items-end justify-between mb-8 px-2">
+            <h2 class="text-[10px] font-bold uppercase tracking-widest text-gray-500">01 -- The Conflict</h2>
+            <p class="serif italic text-xl md:text-2xl text-gray-300">Stupid or Smart?</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4">
+          
+          <!-- Card 1: Cognitive Offload (Negative) -->
+          <div class="group relative md:col-span-2 md:row-span-1 bg-[#0a0a0a] rounded-sm overflow-hidden min-h-[320px] border border-white/5">
+            <img src={images.mit} class="absolute inset-0 w-full h-full object-cover opacity-20 transition-transform duration-700 group-hover:scale-105" />
+            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
+            
+            <div class="relative h-full flex flex-col justify-between p-6 md:p-8">
+                <div>
+                    <div class="text-rose-400 text-[10px] font-bold uppercase tracking-widest mb-2">Issue 01: Offload</div>
+                    <h3 class="text-2xl md:text-3xl mb-2 text-white">Cognitive Decline</h3>
+                    <p class="text-gray-400 text-xs md:text-sm max-w-md leading-relaxed">
+                       MIT Media Lab等の研究報告。<br/>
+                       認知負荷をAIに預けすぎると、批判的思考力や記憶定着率が低下する傾向がある。
+                    </p>
+                </div>
+                <div class="border-t border-white/10 pt-4 mt-auto">
+                     <div class="flex justify-between items-center mb-2">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider">Critical Thinking</span>
+                        <span class="text-[10px] text-rose-400 uppercase tracking-wider">Risk: High</span>
+                     </div>
+                     <MiniBar val={1} max={5} /> <!-- Low thinking score -->
+                </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Productivity (Positive) -->
+          <div class="group relative md:col-span-1 md:row-span-2 bg-[#0a0a0a] rounded-sm overflow-hidden min-h-[400px] border border-white/5">
+             <img src={images.writing} class="absolute inset-0 w-full h-full object-cover opacity-30 transition-transform duration-700 group-hover:scale-105" />
+             <div class="absolute inset-0 bg-black/60"></div>
+             
+             <div class="relative h-full flex flex-col justify-between p-6 md:p-8">
+                <div>
+                    <div class="text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-2">Issue 02: Speed</div>
+                    <h3 class="text-3xl mb-4 text-white">Acceleration</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        職業ライティングや実務においては、AI利用群の方が「速度」も「品質」も向上する結果が出ている。
+                    </p>
+                </div>
+                <div class="border-t border-white/10 pt-4 mt-4">
+                     <div class="flex justify-between items-center mb-2">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider">Productivity</span>
+                     </div>
+                     <MiniBar val={5} max={5} />
+                </div>
+             </div>
+          </div>
+
+          <!-- Card 3: Diversity (Negative) -->
+          <div class="group relative bg-[#0a0a0a] rounded-sm overflow-hidden min-h-[320px] border border-white/5">
+             <img src={images.diversity} class="absolute inset-0 w-full h-full object-cover opacity-20 transition-transform duration-700 group-hover:scale-105" />
+             
+             <div class="relative p-6 md:p-8 h-full flex flex-col justify-between">
+                <div>
+                    <div class="text-indigo-400 text-[10px] font-bold uppercase tracking-widest mb-2">Issue 03: Bias</div>
+                    <h3 class="text-xl mb-1 text-white">Homogenization</h3>
+                    <p class="text-gray-400 text-xs mt-2">
+                        個々の質は上がるが、集合知としての多様性は下がる（Nature Human Behaviour, 2025）。
+                    </p>
+                </div>
+                <div class="border-t border-white/10 pt-4 mt-auto">
+                     <div class="flex justify-between items-center mb-2">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-wider">Diversity</span>
+                     </div>
+                     <MiniBar val={2} max={5} />
+                </div>
+             </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Solution: Two Ways -->
+      <section class="py-24 bg-[#0a0a0a]">
+        <div class="max-w-4xl mx-auto px-6">
+          <h2 class="text-4xl md:text-6xl serif mb-12">
+            Two Paths.
+          </h2>
+          
+          <div class="grid md:grid-cols-2 gap-12">
+            <!-- Path 1 -->
+            <div class="border-l border-white/10 pl-6">
+                <h3 class="text-xl font-bold text-gray-500 mb-4">01. Cognitive Offload</h3>
+                <p class="text-white text-lg mb-4">AIに丸投げする</p>
+                <p class="text-sm text-gray-400 leading-relaxed mb-4">
+                    Vibe Codingや、定型業務の代行。圧倒的に楽で早いが、検証コストが増え、思考の筋肉は衰えるリスクがある。
+                </p>
+                <span class="text-[10px] uppercase tracking-widest text-rose-400 border border-rose-400/30 px-2 py-1 rounded">Use with Caution</span>
+            </div>
+
+            <!-- Path 2 -->
+            <div class="border-l border-emerald-500 pl-6">
+                <h3 class="text-xl font-bold text-emerald-500 mb-4">02. Augmentation</h3>
+                <p class="text-white text-lg mb-4">思考を加速させる</p>
+                <p class="text-sm text-gray-400 leading-relaxed mb-4">
+                    壁打ち、アイデア拡張、対話型学習。自分の脳をエンジンとし、AIをターボチャージャーとして使う。
+                </p>
+                <span class="text-[10px] uppercase tracking-widest text-emerald-400 border border-emerald-400/30 px-2 py-1 rounded">Recommended</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Action List: My Practice -->
+      <section class="py-24">
+         <div class="max-w-4xl mx-auto px-6">
+            <h2 class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-8">My Practice</h2>
+            
+            <div class="space-y-0">
+            {[
+              { id: "01", title: "Interactive Study", desc: "過去問を解き、間違えた理由をAIと議論する（トップダウン学習）" },
+              { id: "02", title: "Idea Sparring", desc: "骨組みだけ作り、AIに広げさせ、最後は自分で選ぶ" },
+              { id: "03", title: "Secretary Mode", desc: "人格を持たせて役割分担。「検証」は人間が担う" },
+            ].map((item) => (
+              <div class="group flex flex-col md:flex-row md:items-baseline border-b border-white/10 py-6 transition-all hover:pl-4">
+                <span class="text-[10px] font-bold text-indigo-500 w-12 mb-2 md:mb-0">/{item.id}</span>
+                <h3 class="text-lg md:text-xl font-medium md:w-1/2 text-gray-200 group-hover:text-indigo-400 transition-colors">{item.title}</h3>
+                <p class="text-gray-500 text-xs md:w-1/3 mt-1 md:mt-0">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div class="mt-16 text-center">
+            <a href="/music-theory-class-18/lessons/lesson22.html" class="inline-block border border-white/20 px-8 py-3 rounded-full text-[10px] uppercase tracking-widest hover:bg-white hover:text-black transition-colors">
+              Read Detailed Report
+            </a>
+          </div>
+         </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="py-12 text-center text-[10px] text-gray-600 uppercase tracking-widest border-t border-white/5">
+        <p>&copy; 2025 NoViLholic Music Theory Class (Extra)</p>
+      </footer>
+
+    </main>
+  </body>
+</html>

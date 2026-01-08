@@ -1,3 +1,13 @@
+—
+layout: ../../layouts/LessonLayout.astro
+title: "第22回｜AI時代を賢く生き抜くには（詳説版）"
+date: "2025-12-xx"
+summary: "AIに思考力を奪われないために。「認知オフロード」と「思考加速」の分岐点。"
+tags: ["music-theory","lesson22","AI"]
+—
+
+> **要点版はこちら →** [/music-theory-class-18/lessons/lesson22-lite.html](/music-theory-class-18/lessons/lesson22-lite.html)
+
 # 第22回 音楽理論勉強会（番外編）
 # テーマ：AI時代を賢く生き抜くには
 ## 副題：AIに思考力を奪われないために
