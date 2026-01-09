@@ -1,7 +1,7 @@
 // src/components/lesson22/ThreeScene.jsx
-import React, { useRef, useState, useEffect, useMemo } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Html, Float, Grid, Stars, Text, Line } from '@react-three/drei';
+import { Html, Float, Grid, Stars, Text } from '@react-three/drei';
 import * as THREE from 'three';
 
 // --- 距離に応じて出現・消失するラッパー ---
@@ -10,23 +10,26 @@ const Section = ({ z, children, fadeRange = 15 }) => {
   
   useFrame(({ camera }) => {
     if (!group.current) return;
-    
-    // カメラとこのセクションの距離
     const dist = Math.abs(camera.position.z - z);
     
-    // 距離が fadeRange より近ければ表示、遠ければ消す
-    // 完全に近づいたら opacity: 1, scale: 1
+    // 距離に応じた透過・スケール制御
     const progress = 1 - THREE.MathUtils.clamp(dist / fadeRange, 0, 1);
-    const ease = progress * progress * (3 - 2 * progress); // smoothstep
+    const ease = progress * progress * (3 - 2 * progress);
 
     group.current.scale.setScalar(ease);
     
-    // 子要素のマテリアル透明度を制御（簡易実装）
+    // 子孫要素のマテリアル透明度を制御
     group.current.traverse((obj) => {
+      // Mesh系
       if (obj.material) {
         obj.material.transparent = true;
         obj.material.opacity = ease;
-        obj.visible = ease > 0.01; // 見えない時は描画しない
+        obj.visible = ease > 0.01;
+      }
+      // Text系 (troika-three-text)
+      if (obj.isText) {
+        obj.fillOpacity = ease;
+        obj.visible = ease > 0.01;
       }
     });
   });
@@ -34,56 +37,139 @@ const Section = ({ z, children, fadeRange = 15 }) => {
   return <group ref={group} position={[0, 0, z]}>{children}</group>;
 };
 
-// --- 共通パーツ: 隔壁 (Partition) ---
+// --- 共通パーツ: 隔壁 ---
 const Partition = ({ label, subLabel }) => (
   <group>
-    <mesh position={[-6, 0, 0]}>
-      <boxGeometry args={[1, 15, 1]} />
+    <mesh position={[-7, 0, 0]}>
+      <boxGeometry args={[2, 16, 2]} />
       <meshStandardMaterial color="#222" metalness={0.8} />
     </mesh>
-    <mesh position={[6, 0, 0]}>
-      <boxGeometry args={[1, 15, 1]} />
+    <mesh position={[7, 0, 0]}>
+      <boxGeometry args={[2, 16, 2]} />
       <meshStandardMaterial color="#222" metalness={0.8} />
     </mesh>
-    <mesh position={[0, 6, 0]}>
-      <boxGeometry args={[13, 1, 1]} />
+    <mesh position={[0, 7, 0]}>
+      <boxGeometry args={[16, 2, 2]} />
       <meshStandardMaterial color="#222" metalness={0.8} />
     </mesh>
-    <Text position={[0, 5.5, 0.6]} fontSize={0.4} color="white" anchorX="center" anchorY="middle" letterSpacing={0.2}>
+    <Text position={[0, 5.5, 0]} fontSize={0.5} color="white" anchorX="center" anchorY="middle" letterSpacing={0.2}>
       {label}
     </Text>
-    <Text position={[0, 4.8, 0.6]} fontSize={0.2} color="#0ea5e9" anchorX="center" anchorY="middle" letterSpacing={0.1}>
+    <Text position={[0, 4.8, 0]} fontSize={0.25} color="#0ea5e9" anchorX="center" anchorY="middle" letterSpacing={0.1}>
       {subLabel}
     </Text>
   </group>
 );
 
-// --- 1. Gate (z: -20) ---
+// --- 床（特定位置で消える） ---
+const DisappearingFloor = () => {
+  const gridRef = useRef();
+  useFrame(({ camera }) => {
+    if(!gridRef.current) return;
+    // z = -90 (Mission Report) を超えたら消す
+    const isEnd = camera.position.z < -90;
+    gridRef.current.visible = !isEnd;
+  });
+
+  return (
+    <group ref={gridRef} position={[0, -4, 0]}>
+       <Grid 
+            args={[10, 10]} 
+            cellSize={1} cellThickness={1} cellColor="#333" 
+            sectionSize={10} sectionThickness={1.5} sectionColor="#555" 
+            fadeDistance={40} followCamera={true} infiniteGrid={true}
+        />
+    </group>
+  )
+}
+
+// --- 1. Gate Area (z: -20) ---
+const CardReader = () => {
+  const [hovered, setHover] = useState(false);
+  
+  const handleClick = () => {
+    // 新しいタブでリンクを開く
+    window.open('https://inaridarkfox4231.github.io/touch_event/', '_blank');
+  };
+
+  return (
+    <group position={[3.5, -2, 2]}>
+      {/* スタンド */}
+      <mesh position={[0, -1, 0]}>
+        <cylinderGeometry args={[0.1, 0.2, 2, 16]} />
+        <meshStandardMaterial color="#333" />
+      </mesh>
+      {/* 本体 */}
+      <mesh 
+        position={[0, 0.5, 0]} 
+        rotation={[0.5, -0.5, 0]}
+        onClick={handleClick}
+        onPointerOver={() => { document.body.style.cursor = 'pointer'; setHover(true); }}
+        onPointerOut={() => { document.body.style.cursor = 'auto'; setHover(false); }}
+      >
+        <boxGeometry args={[0.8, 1, 0.2]} />
+        <meshStandardMaterial color="#111" />
+      </mesh>
+      {/* 画面/光 */}
+      <mesh position={[0.1, 0.6, 0.05]} rotation={[0.5, -0.5, 0]}>
+        <planeGeometry args={[0.6, 0.4]} />
+        <meshBasicMaterial color={hovered ? "#0ea5e9" : "#059669"} />
+      </mesh>
+      <Text 
+        position={[0.2, 0.9, 0.1]} 
+        rotation={[0.5, -0.5, 0]} 
+        fontSize={0.1} 
+        color="white"
+      >
+        TOUCH ID
+      </Text>
+    </group>
+  );
+}
+
 const Gate = ({ scrollZ }) => {
-  // ゲート位置に合わせてトリガー調整
   const gateZ = -20;
-  const triggerZ = gateZ + 5; // -15くらいまで来たら開く
+  // -16くらいまで近づかないと開かない
+  const triggerZ = gateZ + 4; 
   const isOpen = scrollZ < triggerZ;
 
   return (
     <group position={[0, 0, gateZ]}>
-      {/* Left Door */}
-      <mesh position={[-2.5 - (isOpen ? 4 : 0), 0, 0]} transition>
-        <boxGeometry args={[5, 12, 0.5]} />
-        <meshStandardMaterial color="#e5e5e5" roughness={0.2} metalness={0.5} />
+      {/* Door Frame (Static) */}
+      <mesh position={[-4, 0, 0]}>
+        <boxGeometry args={[2, 12, 1]} />
+        <meshStandardMaterial color="#444" />
       </mesh>
-      {/* Right Door */}
-      <mesh position={[2.5 + (isOpen ? 4 : 0), 0, 0]}>
-        <boxGeometry args={[5, 12, 0.5]} />
-        <meshStandardMaterial color="#e5e5e5" roughness={0.2} metalness={0.5} />
+      <mesh position={[4, 0, 0]}>
+        <boxGeometry args={[2, 12, 1]} />
+        <meshStandardMaterial color="#444" />
+      </mesh>
+      <mesh position={[0, 6.5, 0]}>
+        <boxGeometry args={[10, 1, 1]} />
+        <meshStandardMaterial color="#444" />
+      </mesh>
+
+      {/* Sliding Doors */}
+      <mesh position={[-1.5 - (isOpen ? 2.5 : 0), 0, 0]} transition>
+        <boxGeometry args={[3, 12, 0.2]} />
+        <meshStandardMaterial color="#e5e5e5" roughness={0.5} metalness={0.8} />
+      </mesh>
+      <mesh position={[1.5 + (isOpen ? 2.5 : 0), 0, 0]}>
+        <boxGeometry args={[3, 12, 0.2]} />
+        <meshStandardMaterial color="#e5e5e5" roughness={0.5} metalness={0.8} />
       </mesh>
       
+      {/* Card Reader Object */}
+      <CardReader />
+
       {/* Opening Text */}
-      <Html position={[0, 1, 2]} center transform style={{ opacity: isOpen ? 0 : 1, transition: 'opacity 0.5s' }}>
+      <Html position={[0, 2, 2]} center transform style={{ opacity: isOpen ? 0 : 1, transition: 'opacity 0.5s' }}>
         <div className="pointer-events-none text-center select-none">
-          <p className="text-xs tracking-[0.5em] uppercase text-gray-500 mb-4">Security Check</p>
+          <p className="text-xs tracking-[0.5em] uppercase text-gray-500 mb-4">Security Gate</p>
           <h1 className="text-4xl md:text-6xl font-serif font-bold text-black whitespace-nowrap">LESSON 22</h1>
-          <p className="mt-8 text-[10px] uppercase tracking-widest text-emerald-600 animate-pulse">Scroll to Authorize</p>
+          <p className="mt-8 text-[10px] uppercase tracking-widest text-emerald-600 animate-pulse">
+            Approaching...
+          </p>
         </div>
       </Html>
     </group>
@@ -97,14 +183,13 @@ const ArchiveCard = ({ position, title, text, color }) => (
       <mesh>
         <planeGeometry args={[3.5, 5]} />
         <meshBasicMaterial color="#000" side={THREE.DoubleSide} transparent opacity={0.8} />
-        {/* 枠線 */}
         <lineSegments>
           <edgesGeometry args={[new THREE.PlaneGeometry(3.5, 5)]} />
           <lineBasicMaterial color={color} />
         </lineSegments>
       </mesh>
       <Html transform position={[0, 0, 0.1]} scale={0.4} zIndexRange={[50, 0]}>
-        <div className="w-64 text-left p-6 font-sans bg-black/50 backdrop-blur-sm border border-white/10 h-full">
+        <div className="w-64 text-left p-6 font-sans bg-black/50 backdrop-blur-sm border border-white/10 h-full select-none">
           <div className="border-b border-gray-700 pb-2 mb-2" style={{ borderColor: color }}>
             <h3 className="text-2xl font-bold text-white">{title}</h3>
           </div>
@@ -135,39 +220,44 @@ const Crystal = ({ position, color, label, description, type, activeId, setActiv
           onPointerOut={() => document.body.style.cursor = 'auto'}
           scale={isActive ? 1.5 : 1}
         >
-          {/* 本体 */}
+          {/* 本体: 黒いが発光している物質 */}
           <mesh>
             <octahedronGeometry args={[1.5, 0]} />
             <meshPhysicalMaterial 
-              color={isActive ? '#fff' : color} 
-              emissive={isActive ? color : '#000'}
-              emissiveIntensity={isActive ? 1 : 0}
-              roughness={0} 
-              transmission={0.8}
-              thickness={3}
+              color="#111"
+              emissive={color}
+              emissiveIntensity={isActive ? 2 : 0.5} // 常に少し光らせる
+              roughness={0.2} 
+              metalness={0.8}
+              transmission={0}
             />
           </mesh>
           
-          {/* ワイヤーフレーム（黒線） */}
+          {/* ワイヤーフレーム: 白線 */}
           <lineSegments>
             <edgesGeometry args={[new THREE.OctahedronGeometry(1.5, 0)]} />
-            <lineBasicMaterial color="black" linewidth={2} transparent opacity={0.5} />
+            <lineBasicMaterial color="white" transparent opacity={0.3} />
           </lineSegments>
         </group>
 
-        {/* ラベル */}
+        {/* ラベル: 3D Textに変更 (Sectionのフェードと同期させるため) */}
         {!isActive && (
-          <Html position={[0, -2.2, 0]} center zIndexRange={[100, 0]}>
-            <div className="px-3 py-1 bg-black/80 border border-white/20 text-white text-xs uppercase tracking-widest rounded-full pointer-events-none whitespace-nowrap">
-              {label}
-            </div>
-          </Html>
+          <Text 
+            position={[0, -2.2, 0]} 
+            fontSize={0.2} 
+            color="white" 
+            anchorX="center" 
+            anchorY="middle"
+            letterSpacing={0.2}
+          >
+            {label}
+          </Text>
         )}
 
-        {/* 詳細パネル */}
+        {/* 詳細パネル (HTML) */}
         {isActive && (
           <Html position={[0, 3.2, 0]} center zIndexRange={[110, 0]}>
-            <div className="w-72 bg-black/95 border border-white/30 p-6 rounded-lg shadow-[0_0_30px_rgba(0,0,0,0.8)] animate-fade-in-up">
+            <div className="w-72 bg-black/95 border border-white/30 p-6 rounded-lg shadow-[0_0_30px_rgba(0,0,0,0.8)] animate-fade-in-up select-none">
               <h3 className="text-xl font-serif mb-3" style={{ color: color }}>{label}</h3>
               <p className="text-xs text-gray-300 leading-relaxed mb-4">{description}</p>
               <button 
@@ -189,20 +279,18 @@ const LabSection = () => {
   return (
     <>
       <Crystal 
-        position={[-3, 0, 0]} color="#f43f5e" label="Offload (丸投げ)" type="offload"
+        position={[-3, 0, 0]} color="#f43f5e" label="OFFLOAD" type="offload"
         description="思考の丸投げ。楽だが検証コストが増大し、思考力が衰えるリスクがある。「2000行のコード生成」の落とし穴。"
         activeId={activeId} setActiveId={setActiveId}
       />
       <Crystal 
-        position={[3, 0, 0]} color="#10b981" label="Augment (拡張)" type="augment"
+        position={[3, 0, 0]} color="#10b981" label="AUGMENT" type="augment"
         description="思考の加速。自分の脳をエンジンとし、AIをターボチャージャーとして使う。「壁打ち」「対話学習」が鍵。"
         activeId={activeId} setActiveId={setActiveId}
       />
-      <Html position={[0, 4, 0]} center transform scale={2} zIndexRange={[0, 0]}>
-         <div className="pointer-events-none opacity-40">
-            <h2 className="text-white font-serif text-center text-sm tracking-[0.5em]">TOUCH CRYSTALS</h2>
-         </div>
-      </Html>
+      <Text position={[0, 4, 0]} fontSize={0.3} color="white" letterSpacing={0.4} fillOpacity={0.5}>
+        TOUCH CRYSTALS
+      </Text>
     </>
   );
 };
@@ -212,7 +300,7 @@ const HologramMap = () => (
   <group position={[0, -1, 0]}>
     <Grid args={[20, 20]} cellSize={0.5} cellThickness={1} cellColor="#0ea5e9" sectionSize={5} sectionThickness={1.5} sectionColor="#0284c7" fadeDistance={15} />
     <Html position={[0, 2, 0]} center transform>
-       <div className="text-center p-8 bg-black/60 backdrop-blur-md border border-cyan-500/30 rounded-xl">
+       <div className="text-center p-8 bg-black/60 backdrop-blur-md border border-cyan-500/30 rounded-xl select-none">
          <h2 className="text-4xl font-serif text-cyan-400 mb-2" style={{ textShadow: '0 0 20px cyan' }}>Mindset</h2>
          <p className="text-xs text-cyan-200 tracking-widest uppercase">Engine: You / Booster: AI</p>
        </div>
@@ -224,7 +312,7 @@ const HologramMap = () => (
 const Destination = () => (
   <Float speed={1} rotationIntensity={0.1}>
     <Html center transform>
-      <div className="bg-black/80 border-l-4 border-emerald-500 p-8 rounded-r-lg text-center w-[500px] backdrop-blur-xl">
+      <div className="bg-black/80 border-l-4 border-emerald-500 p-8 rounded-r-lg text-center w-[500px] backdrop-blur-xl select-none">
           <h2 className="text-3xl font-serif text-white mb-4">Mission Report</h2>
           <p className="text-sm text-gray-300 mb-6 leading-loose text-left">
             AIは思考を奪わない。<br/>
@@ -254,7 +342,7 @@ const SceneContent = ({ scrollY }) => {
     const currentColor = colorWhite.clone().lerp(colorBlack, bgProgress);
     
     scene.background = currentColor;
-    scene.fog = new THREE.FogExp2(currentColor, 0.035); // 霧を少し濃くして奥を隠す
+    scene.fog = new THREE.FogExp2(currentColor, 0.035); 
   });
 
   return (
@@ -263,17 +351,10 @@ const SceneContent = ({ scrollY }) => {
       <pointLight position={[10, 10, 10]} intensity={1} />
       <pointLight position={[-10, -5, -10]} color="#0ea5e9" intensity={2} />
 
-      {/* 床: Infinite Grid (常にカメラの下に追従させるためGridコンポーネント自体の機能を利用) */}
-      <group position={[0, -4, 0]}>
-        <Grid 
-            args={[10, 10]} 
-            cellSize={1} cellThickness={1} cellColor="#333" 
-            sectionSize={10} sectionThickness={1.5} sectionColor="#555" 
-            fadeDistance={40} followCamera={true} infiniteGrid={true}
-        />
-      </group>
+      {/* 床 (特定の場所で消える) */}
+      <DisappearingFloor />
 
-      {/* --- SCENES (Sectionラッパーで囲む) --- */}
+      {/* --- SCENES --- */}
 
       {/* 1. Gate (-20) */}
       <Gate scrollZ={targetZ} />
