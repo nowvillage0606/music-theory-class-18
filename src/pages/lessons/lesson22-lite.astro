@@ -16,35 +16,29 @@ const fontUrl = "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500
     <title>{page.title}</title>
     <link href={fontUrl} rel="stylesheet">
     <style>
-       body { margin: 0; background: #000; } /* 初期ロード時のちらつき防止 */
+       body { margin: 0; background: #000; }
     </style>
   </head>
   
   <body class="antialiased">
     
-    <!-- 3D Canvas (Fixed Background) 
-         client:only="react" is CRITICAL for WebGL -->
+    <!-- 3D Canvas -->
     <ThreeScene client:only="react" />
 
-    <!-- Scroll Spacer 
-         このdivの高さが、旅の長さ（時間）になります。
-         3D側で scrollY * 0.02 をZ座標にしているので、
-         z=-85 まで行くには 4250px 程度必要 + 余韻分
+    <!-- 
+      Scroll Spacer 
+      pointer-events-none: これが最重要。クリックを透過させる。
     -->
-    <div class="relative z-10 w-full" style="height: 6000px;">
-        <!-- 
-           ここは空っぽでOKです。
-           スクロールバーを出すためだけの存在です。
-           必要であれば、画面端に固定のナビゲーションなどを置けます。
-        -->
-        <div class="fixed bottom-8 left-0 right-0 text-center pointer-events-none mix-blend-difference text-white">
+    <div class="relative z-10 w-full pointer-events-none" style="height: 8000px;">
+        
+        <div class="fixed bottom-8 left-0 right-0 text-center mix-blend-difference text-white">
            <span class="text-[10px] uppercase tracking-widest animate-pulse">
-             Scroll to Explore the Ship
+             Scroll to Explore
            </span>
         </div>
         
-        <!-- ナビゲーション（右上） -->
-        <nav class="fixed top-6 right-6 z-50">
+        <!-- ナビゲーション（ここだけクリック有効にするため pointer-events-auto） -->
+        <nav class="fixed top-6 right-6 z-50 pointer-events-auto">
              <a href="/music-theory-class-18/lessons/lesson22.html" class="bg-white/10 backdrop-blur border border-white/20 text-white text-[10px] uppercase tracking-widest px-4 py-2 rounded-full hover:bg-white hover:text-black transition-colors">
             Text Version
           </a>
