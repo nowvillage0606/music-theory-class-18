@@ -1,61 +1,86 @@
 // src/components/lesson22/ThreeScene.jsx
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Html, Float, Octahedron, Grid, Stars, Text } from '@react-three/drei';
+import { Html, Float, Grid, Stars, Text, Line } from '@react-three/drei';
 import * as THREE from 'three';
 
-// --- 共通コンポーネント: 部屋の区切り (Bulkhead) ---
-const Partition = ({ position, label, subLabel }) => (
-  <group position={position}>
-    {/* フレーム構造 */}
-    <mesh position={[-5, 0, 0]}>
-      <boxGeometry args={[2, 12, 1]} />
-      <meshStandardMaterial color="#333" roughness={0.5} />
-    </mesh>
-    <mesh position={[5, 0, 0]}>
-      <boxGeometry args={[2, 12, 1]} />
-      <meshStandardMaterial color="#333" roughness={0.5} />
-    </mesh>
-    <mesh position={[0, 5, 0]}>
-      <boxGeometry args={[12, 2, 1]} />
-      <meshStandardMaterial color="#333" roughness={0.5} />
-    </mesh>
+// --- 距離に応じて出現・消失するラッパー ---
+const Section = ({ z, children, fadeRange = 15 }) => {
+  const group = useRef();
+  
+  useFrame(({ camera }) => {
+    if (!group.current) return;
     
-    {/* ラベル */}
-    <Text position={[0, 5, 0.6]} fontSize={0.5} color="white" anchorX="center" anchorY="middle" letterSpacing={0.2}>
+    // カメラとこのセクションの距離
+    const dist = Math.abs(camera.position.z - z);
+    
+    // 距離が fadeRange より近ければ表示、遠ければ消す
+    // 完全に近づいたら opacity: 1, scale: 1
+    const progress = 1 - THREE.MathUtils.clamp(dist / fadeRange, 0, 1);
+    const ease = progress * progress * (3 - 2 * progress); // smoothstep
+
+    group.current.scale.setScalar(ease);
+    
+    // 子要素のマテリアル透明度を制御（簡易実装）
+    group.current.traverse((obj) => {
+      if (obj.material) {
+        obj.material.transparent = true;
+        obj.material.opacity = ease;
+        obj.visible = ease > 0.01; // 見えない時は描画しない
+      }
+    });
+  });
+
+  return <group ref={group} position={[0, 0, z]}>{children}</group>;
+};
+
+// --- 共通パーツ: 隔壁 (Partition) ---
+const Partition = ({ label, subLabel }) => (
+  <group>
+    <mesh position={[-6, 0, 0]}>
+      <boxGeometry args={[1, 15, 1]} />
+      <meshStandardMaterial color="#222" metalness={0.8} />
+    </mesh>
+    <mesh position={[6, 0, 0]}>
+      <boxGeometry args={[1, 15, 1]} />
+      <meshStandardMaterial color="#222" metalness={0.8} />
+    </mesh>
+    <mesh position={[0, 6, 0]}>
+      <boxGeometry args={[13, 1, 1]} />
+      <meshStandardMaterial color="#222" metalness={0.8} />
+    </mesh>
+    <Text position={[0, 5.5, 0.6]} fontSize={0.4} color="white" anchorX="center" anchorY="middle" letterSpacing={0.2}>
       {label}
     </Text>
-    <Text position={[0, 4.2, 0.6]} fontSize={0.25} color="#0ea5e9" anchorX="center" anchorY="middle" letterSpacing={0.1}>
+    <Text position={[0, 4.8, 0.6]} fontSize={0.2} color="#0ea5e9" anchorX="center" anchorY="middle" letterSpacing={0.1}>
       {subLabel}
     </Text>
   </group>
 );
 
-// --- 1. Gate (z: 0) ---
+// --- 1. Gate (z: -20) ---
 const Gate = ({ scrollZ }) => {
-  // 改良: -10 (結構スクロールしないと開かない)
-  const triggerZ = -10; 
+  // ゲート位置に合わせてトリガー調整
+  const gateZ = -20;
+  const triggerZ = gateZ + 5; // -15くらいまで来たら開く
   const isOpen = scrollZ < triggerZ;
-  
-  // ゲート自体の位置も少し奥まらせて、アプローチ感を作る
-  const gatePos = -5;
 
   return (
-    <group position={[0, 0, gatePos]}>
+    <group position={[0, 0, gateZ]}>
       {/* Left Door */}
-      <mesh position={[-2 - (isOpen ? 3.5 : 0), 0, 0]} transition>
-        <boxGeometry args={[4, 12, 0.5]} />
-        <meshStandardMaterial color="#e5e5e5" roughness={0.2} metalness={0.8} />
+      <mesh position={[-2.5 - (isOpen ? 4 : 0), 0, 0]} transition>
+        <boxGeometry args={[5, 12, 0.5]} />
+        <meshStandardMaterial color="#e5e5e5" roughness={0.2} metalness={0.5} />
       </mesh>
       {/* Right Door */}
-      <mesh position={[2 + (isOpen ? 3.5 : 0), 0, 0]}>
-        <boxGeometry args={[4, 12, 0.5]} />
-        <meshStandardMaterial color="#e5e5e5" roughness={0.2} metalness={0.8} />
+      <mesh position={[2.5 + (isOpen ? 4 : 0), 0, 0]}>
+        <boxGeometry args={[5, 12, 0.5]} />
+        <meshStandardMaterial color="#e5e5e5" roughness={0.2} metalness={0.5} />
       </mesh>
       
       {/* Opening Text */}
       <Html position={[0, 1, 2]} center transform style={{ opacity: isOpen ? 0 : 1, transition: 'opacity 0.5s' }}>
-        <div className="pointer-events-none text-center">
+        <div className="pointer-events-none text-center select-none">
           <p className="text-xs tracking-[0.5em] uppercase text-gray-500 mb-4">Security Check</p>
           <h1 className="text-4xl md:text-6xl font-serif font-bold text-black whitespace-nowrap">LESSON 22</h1>
           <p className="mt-8 text-[10px] uppercase tracking-widest text-emerald-600 animate-pulse">Scroll to Authorize</p>
@@ -65,20 +90,21 @@ const Gate = ({ scrollZ }) => {
   );
 };
 
-// --- 2. Archives (z: -25) ---
+// --- 2. Archives (z: -40) ---
 const ArchiveCard = ({ position, title, text, color }) => (
   <Float speed={2} rotationIntensity={0.1} floatIntensity={0.3}>
     <group position={position}>
       <mesh>
         <planeGeometry args={[3.5, 5]} />
-        <meshBasicMaterial color="#0a0a0a" side={THREE.DoubleSide} transparent opacity={0.9} />
+        <meshBasicMaterial color="#000" side={THREE.DoubleSide} transparent opacity={0.8} />
+        {/* 枠線 */}
         <lineSegments>
           <edgesGeometry args={[new THREE.PlaneGeometry(3.5, 5)]} />
           <lineBasicMaterial color={color} />
         </lineSegments>
       </mesh>
-      <Html transform position={[0, 0, 0.1]} scale={0.4}>
-        <div className="w-64 text-left p-6 select-none font-sans">
+      <Html transform position={[0, 0, 0.1]} scale={0.4} zIndexRange={[50, 0]}>
+        <div className="w-64 text-left p-6 font-sans bg-black/50 backdrop-blur-sm border border-white/10 h-full">
           <div className="border-b border-gray-700 pb-2 mb-2" style={{ borderColor: color }}>
             <h3 className="text-2xl font-bold text-white">{title}</h3>
           </div>
@@ -89,58 +115,64 @@ const ArchiveCard = ({ position, title, text, color }) => (
   </Float>
 );
 
-// --- 3. Lab (z: -45) - Interactive Crystals ---
+// --- 3. Lab (z: -60) ---
 const Crystal = ({ position, color, label, description, type, activeId, setActiveId }) => {
   const mesh = useRef();
   const isActive = activeId === type;
 
   useFrame((state, delta) => {
-    mesh.current.rotation.y += delta * 0.5;
-    if (isActive) {
-      mesh.current.rotation.x += delta * 0.5;
-    }
+    mesh.current.rotation.y += delta * 0.3;
+    if (isActive) mesh.current.rotation.x += delta * 0.5;
   });
 
   return (
     <group position={position}>
-      <Float speed={isActive ? 0 : 3} rotationIntensity={0.5} floatIntensity={1}>
-        {/* 改良: Octahedron (8角錐) */}
-        <mesh 
-          ref={mesh} 
+      <Float speed={isActive ? 0 : 2} rotationIntensity={0.5} floatIntensity={1}>
+        <group 
+          ref={mesh}
           onClick={(e) => { e.stopPropagation(); setActiveId(isActive ? null : type); }}
           onPointerOver={() => document.body.style.cursor = 'pointer'}
           onPointerOut={() => document.body.style.cursor = 'auto'}
           scale={isActive ? 1.5 : 1}
         >
-          <octahedronGeometry args={[1.5, 0]} />
-          <meshPhysicalMaterial 
-            color={isActive ? '#fff' : color} 
-            emissive={isActive ? color : '#000'}
-            emissiveIntensity={isActive ? 2 : 0}
-            roughness={0.1} 
-            transmission={0.6}
-            thickness={2}
-          />
-        </mesh>
-        
-        {/* 常時表示ラベル */}
+          {/* 本体 */}
+          <mesh>
+            <octahedronGeometry args={[1.5, 0]} />
+            <meshPhysicalMaterial 
+              color={isActive ? '#fff' : color} 
+              emissive={isActive ? color : '#000'}
+              emissiveIntensity={isActive ? 1 : 0}
+              roughness={0} 
+              transmission={0.8}
+              thickness={3}
+            />
+          </mesh>
+          
+          {/* ワイヤーフレーム（黒線） */}
+          <lineSegments>
+            <edgesGeometry args={[new THREE.OctahedronGeometry(1.5, 0)]} />
+            <lineBasicMaterial color="black" linewidth={2} transparent opacity={0.5} />
+          </lineSegments>
+        </group>
+
+        {/* ラベル */}
         {!isActive && (
-          <Html position={[0, -2.5, 0]} center>
-            <div className="px-3 py-1 border border-white/20 bg-black/50 text-white text-xs uppercase tracking-widest backdrop-blur-md rounded-full pointer-events-none">
+          <Html position={[0, -2.2, 0]} center zIndexRange={[100, 0]}>
+            <div className="px-3 py-1 bg-black/80 border border-white/20 text-white text-xs uppercase tracking-widest rounded-full pointer-events-none whitespace-nowrap">
               {label}
             </div>
           </Html>
         )}
 
-        {/* クリック時詳細パネル */}
+        {/* 詳細パネル */}
         {isActive && (
-          <Html position={[0, 3, 0]} center zIndexRange={[100, 0]}>
-            <div className="w-72 bg-black/90 border border-white/30 p-6 rounded-lg backdrop-blur-xl animate-fade-in-up">
-              <h3 className="text-xl font-serif mb-2" style={{ color: color }}>{label}</h3>
-              <p className="text-xs text-gray-300 leading-relaxed">{description}</p>
+          <Html position={[0, 3.2, 0]} center zIndexRange={[110, 0]}>
+            <div className="w-72 bg-black/95 border border-white/30 p-6 rounded-lg shadow-[0_0_30px_rgba(0,0,0,0.8)] animate-fade-in-up">
+              <h3 className="text-xl font-serif mb-3" style={{ color: color }}>{label}</h3>
+              <p className="text-xs text-gray-300 leading-relaxed mb-4">{description}</p>
               <button 
                 onClick={(e) => { e.stopPropagation(); setActiveId(null); }}
-                className="mt-4 text-[10px] uppercase border border-white/20 px-3 py-1 rounded hover:bg-white hover:text-black transition-colors"
+                className="text-[10px] uppercase border border-white/20 px-4 py-2 rounded hover:bg-white hover:text-black transition-colors w-full"
               >
                 Close
               </button>
@@ -154,93 +186,75 @@ const Crystal = ({ position, color, label, description, type, activeId, setActiv
 
 const LabSection = () => {
   const [activeId, setActiveId] = useState(null);
-
   return (
-    <group position={[0, 0, -45]}>
+    <>
       <Crystal 
-        position={[-3, 0, 0]} 
-        color="#f43f5e" 
-        label="Offload" 
-        type="offload"
+        position={[-3, 0, 0]} color="#f43f5e" label="Offload (丸投げ)" type="offload"
         description="思考の丸投げ。楽だが検証コストが増大し、思考力が衰えるリスクがある。「2000行のコード生成」の落とし穴。"
-        activeId={activeId}
-        setActiveId={setActiveId}
+        activeId={activeId} setActiveId={setActiveId}
       />
       <Crystal 
-        position={[3, 0, 0]} 
-        color="#10b981" 
-        label="Augment" 
-        type="augment"
+        position={[3, 0, 0]} color="#10b981" label="Augment (拡張)" type="augment"
         description="思考の加速。自分の脳をエンジンとし、AIをターボチャージャーとして使う。「壁打ち」「対話学習」が鍵。"
-        activeId={activeId}
-        setActiveId={setActiveId}
+        activeId={activeId} setActiveId={setActiveId}
       />
-      <Html position={[0, 3, 0]} center transform scale={2}>
-         <div className="pointer-events-none opacity-50">
-            <h2 className="text-white font-serif text-center">Touch Crystals</h2>
+      <Html position={[0, 4, 0]} center transform scale={2} zIndexRange={[0, 0]}>
+         <div className="pointer-events-none opacity-40">
+            <h2 className="text-white font-serif text-center text-sm tracking-[0.5em]">TOUCH CRYSTALS</h2>
          </div>
       </Html>
-    </group>
+    </>
   );
 };
 
-
-// --- 4. Map (z: -65) ---
+// --- 4. Map (z: -80) ---
 const HologramMap = () => (
-  <group position={[0, -1, -65]}>
-    <Grid args={[20, 20]} cellSize={0.5} cellThickness={1} cellColor="#0ea5e9" sectionSize={5} sectionThickness={1.5} sectionColor="#0284c7" fadeDistance={20} />
+  <group position={[0, -1, 0]}>
+    <Grid args={[20, 20]} cellSize={0.5} cellThickness={1} cellColor="#0ea5e9" sectionSize={5} sectionThickness={1.5} sectionColor="#0284c7" fadeDistance={15} />
     <Html position={[0, 2, 0]} center transform>
-       <div className="text-center p-8 bg-black/40 backdrop-blur-sm border border-cyan-500/30 rounded-full">
-         <h2 className="text-4xl font-serif text-cyan-400 mb-2" style={{ textShadow: '0 0 20px cyan' }}>Mindset Positioning</h2>
-         <p className="text-xs text-cyan-200 tracking-widest uppercase">Engine: Human / Booster: AI</p>
+       <div className="text-center p-8 bg-black/60 backdrop-blur-md border border-cyan-500/30 rounded-xl">
+         <h2 className="text-4xl font-serif text-cyan-400 mb-2" style={{ textShadow: '0 0 20px cyan' }}>Mindset</h2>
+         <p className="text-xs text-cyan-200 tracking-widest uppercase">Engine: You / Booster: AI</p>
        </div>
     </Html>
   </group>
 );
 
-// --- 5. Destination (z: -85) & 6. Spaceship ---
+// --- 5. Destination (z: -100) ---
 const Destination = () => (
-  <group position={[0, 0, -85]}>
-     <Float speed={1} rotationIntensity={0.1}>
-        <Html center transform>
-          <div className="bg-black/80 border-l-4 border-emerald-500 p-8 rounded-r-lg text-center w-[500px] backdrop-blur-xl">
-             <h2 className="text-3xl font-serif text-white mb-4">Mission Report</h2>
-             <p className="text-sm text-gray-300 mb-6 leading-loose text-left">
-                我々はAIに「思考」を奪われるのではない。<br/>
-                <span className="text-emerald-400 font-bold">「検証」と「判断」</span>という新しい思考領域へ移行するのだ。<br/>
-                良き航海を。
-             </p>
-             <div className="text-[10px] text-gray-600 uppercase tracking-[0.3em] text-right">End of Lesson 22</div>
-          </div>
-        </Html>
-     </Float>
-  </group>
+  <Float speed={1} rotationIntensity={0.1}>
+    <Html center transform>
+      <div className="bg-black/80 border-l-4 border-emerald-500 p-8 rounded-r-lg text-center w-[500px] backdrop-blur-xl">
+          <h2 className="text-3xl font-serif text-white mb-4">Mission Report</h2>
+          <p className="text-sm text-gray-300 mb-6 leading-loose text-left">
+            AIは思考を奪わない。<br/>
+            我々は<span className="text-emerald-400 font-bold">「検証」と「判断」</span>の領域へ進む。<br/>
+            良き航海を。
+          </p>
+          <div className="text-[10px] text-gray-600 uppercase tracking-[0.3em] text-right">End of Lesson 22</div>
+      </div>
+    </Html>
+  </Float>
 );
 
 
-// --- Main Scene Controller ---
+// --- Main Scene ---
 const SceneContent = ({ scrollY }) => {
   const { camera, scene } = useThree();
-  
-  // スクロール感度の調整
   const targetZ = -(scrollY * 0.02); 
 
   useFrame(() => {
-    // カメラ移動（スムーズ）
+    // カメラ移動
     camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetZ, 0.1);
     
-    // 背景色: Gate付近は白、以降は宇宙の黒
-    const z = camera.position.z;
-    // z=0(白) -> z=-15(黒)
-    const progress = THREE.MathUtils.clamp(-z / 15, 0, 1);
-    
-    const colorWhite = new THREE.Color('#f1f5f9');
+    // 背景色遷移 (0 to -30)
+    const bgProgress = THREE.MathUtils.clamp(-camera.position.z / 30, 0, 1);
+    const colorWhite = new THREE.Color('#f8fafc');
     const colorBlack = new THREE.Color('#050505');
+    const currentColor = colorWhite.clone().lerp(colorBlack, bgProgress);
     
-    const currentColor = colorWhite.clone().lerp(colorBlack, progress);
     scene.background = currentColor;
-    // 霧を少し薄くして、奥の部屋が見えるようにする
-    scene.fog = new THREE.FogExp2(currentColor, 0.02);
+    scene.fog = new THREE.FogExp2(currentColor, 0.035); // 霧を少し濃くして奥を隠す
   });
 
   return (
@@ -249,50 +263,52 @@ const SceneContent = ({ scrollY }) => {
       <pointLight position={[10, 10, 10]} intensity={1} />
       <pointLight position={[-10, -5, -10]} color="#0ea5e9" intensity={2} />
 
-      {/* 床 (Deck) - ずっと続くグリッド */}
-      <group position={[0, -4, -50]}>
+      {/* 床: Infinite Grid (常にカメラの下に追従させるためGridコンポーネント自体の機能を利用) */}
+      <group position={[0, -4, 0]}>
         <Grid 
-            args={[10, 200]} // 幅10, 長さ200
-            cellSize={1} 
-            cellThickness={1} 
-            cellColor="#333" 
-            sectionSize={10} 
-            sectionThickness={1.5} 
-            sectionColor="#555" 
-            fadeDistance={50} 
-            infiniteGrid={true}
+            args={[10, 10]} 
+            cellSize={1} cellThickness={1} cellColor="#333" 
+            sectionSize={10} sectionThickness={1.5} sectionColor="#555" 
+            fadeDistance={40} followCamera={true} infiniteGrid={true}
         />
       </group>
 
-      {/* 1. Gate Area */}
+      {/* --- SCENES (Sectionラッパーで囲む) --- */}
+
+      {/* 1. Gate (-20) */}
       <Gate scrollZ={targetZ} />
 
-      {/* Partition 1: Archive Entrance */}
-      <Partition position={[0, -4, -15]} label="SECTOR A" subLabel="ARCHIVES" />
+      {/* 2. Archives (-40) */}
+      <Section z={-40}>
+        <Partition label="SECTOR A" subLabel="ARCHIVES" />
+        <group position={[0, 0, -5]}>
+           <ArchiveCard position={[-3.5, 1, 0]} title="Deep Think" text="推論能力の獲得。答えを即答せず、思考プロセスを持つようになった。" color="#34d399" />
+           <ArchiveCard position={[3.5, -1, -2]} title="Risks" text="思考の丸投げは批判的思考力を低下させる。「認知オフロード」の罠。" color="#f43f5e" />
+           <ArchiveCard position={[0, 2.5, -4]} title="Speed & Quality" text="適切な利用は生産性を向上させる。速度と質の両立が可能。" color="#6366f1" />
+        </group>
+      </Section>
 
-      {/* 2. Archives Area */}
-      <group position={[0, 0, -25]}>
-        <ArchiveCard position={[-3.5, 1, 0]} title="Deep Think" text="2025年、AIは推論能力を獲得。答えを即答せず、思考プロセスを持つようになった。" color="#34d399" />
-        <ArchiveCard position={[3.5, -1, -2]} title="Risks" text="思考の丸投げは批判的思考力を低下させる。「認知オフロード」の罠。" color="#f43f5e" />
-        <ArchiveCard position={[0, 2.5, -4]} title="Speed & Quality" text="適切な利用は生産性を劇的に向上させる。速度と質の両立が可能。" color="#6366f1" />
-      </group>
+      {/* 3. Lab (-60) */}
+      <Section z={-60}>
+        <Partition label="SECTOR B" subLabel="LABORATORY" />
+        <group position={[0, 0, -5]}>
+          <LabSection />
+        </group>
+      </Section>
 
-      {/* Partition 2: Lab Entrance */}
-      <Partition position={[0, -4, -35]} label="SECTOR B" subLabel="LABORATORY" />
+      {/* 4. Map (-80) */}
+      <Section z={-80}>
+         <Partition label="SECTOR C" subLabel="BRIDGE" />
+         <group position={[0, 0, -5]}>
+            <HologramMap />
+         </group>
+      </Section>
 
-      {/* 3. Lab Area */}
-      <LabSection />
+      {/* 5. Destination (-100) */}
+      <Section z={-100}>
+         <Destination />
+      </Section>
 
-      {/* Partition 3: Map Entrance */}
-      <Partition position={[0, -4, -55]} label="SECTOR C" subLabel="BRIDGE" />
-
-      {/* 4. Map Area */}
-      <HologramMap />
-
-      {/* 5. Destination & Ending */}
-      <Destination />
-      
-      {/* Stars (Only visible in dark areas) */}
       <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={0.5} />
     </>
   );
