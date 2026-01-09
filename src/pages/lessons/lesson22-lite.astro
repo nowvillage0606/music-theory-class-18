@@ -1,411 +1,55 @@
 ---
 import "../../styles/tailwind.css";
-// ガイドラインに従いMiniBarを利用（なければ標準HTMLで描画されるようフォールバックも考慮した設計ですが、importは残します）
-import MiniBar from "../../components/MiniBar.astro";
+import ThreeScene from "../../components/lesson22/ThreeScene.jsx";
 
 const page = {
-  title: "Thinking in the Age of AI",
-  subtitle: "Lesson 22",
-  lead: "AIに思考力を奪われないために。",
-  date: "2025.12.xx"
+  title: "Lesson 22: Thinking Agency",
 };
 
-const fontUrl = "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap";
-
-// 空間演出用の画像（Unsplash）
-const images = {
-  // Scene 2: Library
-  library: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=2000&auto=format&fit=crop",
-  // Scene 6: Spaceship
-  ship: "https://images.unsplash.com/photo-1541185933-717852c42260?q=80&w=2000&auto=format&fit=crop",
-  // Texture
-  noise: "data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"
-};
+const fontUrl = "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap";
 ---
 
-<html lang="ja" class="scroll-smooth">
+<html lang="ja">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>{page.title} | {page.subtitle}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>{page.title}</title>
     <link href={fontUrl} rel="stylesheet">
-    
     <style>
-      /* Base Settings */
-      body {
-        font-family: 'Inter', sans-serif;
-        background-color: #050505;
-        color: #e5e5e5;
-        overflow-x: hidden;
-      }
-      h1, h2, h3, .serif { font-family: 'Playfair Display', serif; }
-      
-      /* Noise Texture */
-      .bg-noise { background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E'); }
-
-      /* Custom Animations */
-      @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-      }
-      .animate-float { animation: float 6s ease-in-out infinite; }
-      
-      @keyframes pulse-glow {
-        0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
-        50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.5); }
-      }
-      .glow-emerald { animation: pulse-glow 3s infinite; }
-
-      /* Hologram Effect */
-      .hologram-text {
-        color: rgba(255, 255, 255, 0.9);
-        text-shadow: 0 0 5px rgba(100, 200, 255, 0.5), 0 0 10px rgba(100, 200, 255, 0.3);
-      }
+       body { margin: 0; background: #000; } /* 初期ロード時のちらつき防止 */
     </style>
   </head>
   
-  <body class="antialiased selection:bg-emerald-500 selection:text-white">
-
-    <!-- Fixed Nav -->
-    <nav class="fixed top-0 left-0 right-0 z-[100] flex justify-between items-center px-6 py-6 mix-blend-difference text-white pointer-events-none">
-      <span class="text-[10px] font-bold tracking-[0.2em] uppercase">{page.subtitle}</span>
-      <a href="/music-theory-class-18/lessons/lesson22.html" class="pointer-events-auto text-[10px] uppercase tracking-widest border border-white/30 px-4 py-2 rounded-full hover:bg-white hover:text-black transition-all duration-300">
-        Full Note
-      </a>
-    </nav>
-
-    <main class="relative w-full">
-      
-      <!-- ============================================
-           SCENE 1: THE GATE (注意)
-           White sterile space -> Opens to Dark
-      ============================================ -->
-      <section id="scene-gate" class="relative h-[200vh] z-50">
-        <div class="sticky top-0 h-screen w-full overflow-hidden bg-white text-black flex items-center justify-center">
-          <!-- Opening Doors -->
-          <div id="gate-left" class="absolute inset-y-0 left-0 w-1/2 bg-gray-100 border-r border-gray-300 transition-transform duration-1000 ease-out origin-left z-20 flex items-center justify-end pr-4">
-             <div class="h-32 w-1 bg-gray-300/50 rounded-full"></div>
-          </div>
-          <div id="gate-right" class="absolute inset-y-0 right-0 w-1/2 bg-gray-100 border-l border-gray-300 transition-transform duration-1000 ease-out origin-right z-20 flex items-center justify-start pl-4">
-             <div class="h-32 w-1 bg-gray-300/50 rounded-full"></div>
-          </div>
-
-          <!-- Content inside the gate -->
-          <div class="relative z-10 text-center opacity-100 transition-opacity duration-500" id="gate-content">
-            <p class="text-[10px] tracking-[0.5em] uppercase text-gray-400 mb-6">Music Theory Class Extra</p>
-            <h1 class="text-4xl md:text-7xl font-medium tracking-tight leading-tight mb-4">
-              AI時代を<br/>賢く生き抜くには
-            </h1>
-            <p class="text-xs text-gray-500 uppercase tracking-widest mt-8 animate-bounce">Scroll to Enter</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============================================
-           SCENE 2: LIBRARY (理解)
-           Dark, Data, History
-      ============================================ -->
-      <section id="scene-library" class="relative z-40 bg-[#0a0a0a] min-h-screen py-24 px-6">
-        <div class="absolute inset-0 bg-noise pointer-events-none opacity-20"></div>
-        <!-- BG Image Fade -->
-        <div class="absolute inset-0 z-0">
-             <img src={images.library} class="w-full h-full object-cover opacity-10 blur-sm" />
-             <div class="absolute inset-0 bg-gradient-to-b from-[#050505] via-[#050505]/90 to-[#050505]"></div>
-        </div>
-
-        <div class="relative z-10 max-w-6xl mx-auto">
-          <header class="mb-16 border-l-2 border-emerald-500/50 pl-6">
-            <h2 class="text-3xl md:text-5xl serif mb-4 text-white">The Archives</h2>
-            <p class="text-gray-400 text-sm max-w-xl">
-              2025年、AIは「推論」を手に入れた。<br/>
-              ここにあるのは、AIの進化と思考力に関する記録資料だ。
-            </p>
-          </header>
-
-          <!-- Cards Grid (Interactivity handled via script) -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <!-- Doc 1: History -->
-            <div class="library-card group cursor-pointer bg-white/5 border border-white/10 p-6 rounded-sm hover:bg-white/10 transition-all" onclick="toggleCard(this)">
-              <div class="text-[10px] text-emerald-400 uppercase tracking-widest mb-2">History.2025</div>
-              <h3 class="text-xl serif text-white mb-4 group-hover:text-emerald-300">Deep Think Era</h3>
-              <p class="text-xs text-gray-400 leading-relaxed line-clamp-3 group-[.active]:line-clamp-none">
-                DeepSeek-R1の登場以降、「推論（Reasoning）」が一般化。AIは即答せず、Step-by-stepで考え、筋の通った結論を出すエージェントへと進化した。
-              </p>
-              <div class="mt-4 pt-4 border-t border-white/5 opacity-0 group-[.active]:opacity-100 transition-opacity">
-                 <ul class="text-[10px] text-gray-500 space-y-1">
-                    <li>- 推論モデルの一般化</li>
-                    <li>- マルチモーダル統合</li>
-                    <li>- エージェント化（自律実行）</li>
-                 </ul>
-              </div>
-            </div>
-
-            <!-- Doc 2: Negative Research -->
-            <div class="library-card group cursor-pointer bg-white/5 border border-white/10 p-6 rounded-sm hover:bg-white/10 transition-all" onclick="toggleCard(this)">
-              <div class="text-[10px] text-rose-400 uppercase tracking-widest mb-2">Research.Negative</div>
-              <h3 class="text-xl serif text-white mb-4 group-hover:text-rose-300">Cognitive Decline</h3>
-              <p class="text-xs text-gray-400 leading-relaxed line-clamp-3 group-[.active]:line-clamp-none">
-                MIT Media Lab (2025) 等の報告。「認知オフロード」への過度な依存は、批判的思考力や記憶定着の低下を招くリスクがある。
-              </p>
-               <div class="mt-4 pt-4 border-t border-white/5 opacity-0 group-[.active]:opacity-100 transition-opacity">
-                 <MiniBar label="Critical Thinking" val={1} max={5} />
-              </div>
-            </div>
-
-            <!-- Doc 3: Positive Research -->
-            <div class="library-card group cursor-pointer bg-white/5 border border-white/10 p-6 rounded-sm hover:bg-white/10 transition-all" onclick="toggleCard(this)">
-              <div class="text-[10px] text-indigo-400 uppercase tracking-widest mb-2">Research.Positive</div>
-              <h3 class="text-xl serif text-white mb-4 group-hover:text-indigo-300">Acceleration</h3>
-              <p class="text-xs text-gray-400 leading-relaxed line-clamp-3 group-[.active]:line-clamp-none">
-                職業ライティングや実務においては、AI利用群の方が「速度」「品質」共に向上。単純な能力低下ではなく、使い方の問題であることを示唆。
-              </p>
-              <div class="mt-4 pt-4 border-t border-white/5 opacity-0 group-[.active]:opacity-100 transition-opacity">
-                 <MiniBar label="Productivity" val={5} max={5} />
-              </div>
-            </div>
-
-          </div>
-          <p class="text-center text-[10px] text-gray-600 mt-8 uppercase tracking-widest">Tap cards to read details</p>
-        </div>
-      </section>
-
-      <!-- ============================================
-           SCENE 3: LABORATORY (理解・選択)
-           Two Crystals
-      ============================================ -->
-      <section id="scene-lab" class="relative z-30 bg-[#050505] min-h-screen py-24 flex items-center justify-center overflow-hidden">
-         <!-- BG Effects -->
-         <div class="absolute top-1/2 left-1/4 w-96 h-96 bg-rose-900/20 rounded-full blur-[100px]"></div>
-         <div class="absolute top-1/2 right-1/4 w-96 h-96 bg-emerald-900/20 rounded-full blur-[100px]"></div>
-
-         <div class="relative z-10 w-full max-w-6xl px-6">
-            <h2 class="text-center text-[10px] font-bold uppercase tracking-[0.3em] text-gray-500 mb-16">The Two Paths</h2>
-            
-            <div class="grid md:grid-cols-2 gap-12 md:gap-24 items-center">
-                
-                <!-- Crystal 1: Offload -->
-                <div class="group relative text-center">
-                    <div class="relative inline-block cursor-pointer transition-transform duration-500 hover:scale-110" onclick="toggleLab('offload')">
-                        <div class="w-32 h-32 md:w-48 md:h-48 rounded-full bg-gradient-to-br from-rose-500/20 to-transparent border border-rose-500/30 backdrop-blur-md flex items-center justify-center shadow-[0_0_30px_rgba(244,63,94,0.1)] group-hover:shadow-[0_0_50px_rgba(244,63,94,0.4)] transition-shadow">
-                            <span class="material-symbols-outlined text-rose-300 text-4xl">downloading</span>
-                        </div>
-                        <div class="absolute -bottom-12 left-0 right-0 text-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span class="text-xs text-rose-400 uppercase tracking-widest">Offload</span>
-                        </div>
-                    </div>
-                    <!-- Hidden Detail -->
-                    <div id="info-offload" class="hidden mt-8 bg-rose-900/10 border border-rose-500/20 p-6 rounded text-left animate-fade-in-up">
-                        <h3 class="text-xl serif text-rose-200 mb-2">Cognitive Offload</h3>
-                        <p class="text-xs text-gray-400 leading-relaxed">
-                            思考の「丸投げ」。Vibe Codingのように楽で早いが、検証コストが増し、思考の筋肉は衰えるリスクがある。<br/>
-                            <strong class="text-rose-400">注意: 2000行のコード生成は数秒だが、その検証には数時間かかるかもしれない。</strong>
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Crystal 2: Augment -->
-                <div class="group relative text-center">
-                    <div class="relative inline-block cursor-pointer transition-transform duration-500 hover:scale-110" onclick="toggleLab('augment')">
-                        <div class="w-32 h-32 md:w-48 md:h-48 rounded-full bg-gradient-to-br from-emerald-500/20 to-transparent border border-emerald-500/30 backdrop-blur-md flex items-center justify-center shadow-[0_0_30px_rgba(16,185,129,0.1)] group-hover:shadow-[0_0_50px_rgba(16,185,129,0.4)] transition-shadow glow-emerald">
-                            <span class="material-symbols-outlined text-emerald-300 text-4xl">psychology</span>
-                        </div>
-                         <div class="absolute -bottom-12 left-0 right-0 text-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span class="text-xs text-emerald-400 uppercase tracking-widest">Augment</span>
-                        </div>
-                    </div>
-                     <!-- Hidden Detail -->
-                    <div id="info-augment" class="hidden mt-8 bg-emerald-900/10 border border-emerald-500/20 p-6 rounded text-left animate-fade-in-up">
-                        <h3 class="text-xl serif text-emerald-200 mb-2">Thinking Augmentation</h3>
-                        <p class="text-xs text-gray-400 leading-relaxed">
-                            思考の「加速」。自分の脳をエンジンとし、AIをターボチャージャーとして使う。<br/>
-                            <strong class="text-emerald-400">推奨: 壁打ち、アイデア拡張、対話型学習。主導権は人間が握る。</strong>
-                        </p>
-                    </div>
-                </div>
-
-            </div>
-         </div>
-      </section>
-
-      <!-- ============================================
-           SCENE 4: MAP (前提認識)
-           Holographic Map
-      ============================================ -->
-      <section id="scene-map" class="relative z-20 min-h-[80vh] bg-[#080808] border-y border-white/5 overflow-hidden">
-        <!-- Grid Floor -->
-        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [transform:perspective(500px)_rotateX(60deg)] origin-bottom opacity-50"></div>
-        
-        <div class="relative z-10 max-w-4xl mx-auto py-24 px-6 text-center">
-            <h2 class="text-2xl md:text-4xl serif mb-12 hologram-text">Mindset Positioning</h2>
-            
-            <div class="relative inline-block border border-cyan-500/30 bg-cyan-900/5 p-8 md:p-12 rounded-lg backdrop-blur-sm">
-                <!-- Map Points -->
-                <div class="flex flex-col md:flex-row items-center gap-8 md:gap-16">
-                    <div class="text-center">
-                        <div class="w-16 h-16 rounded-full border-2 border-gray-600 bg-gray-800 flex items-center justify-center mb-4 mx-auto">
-                            <span class="material-symbols-outlined text-gray-400">person</span>
-                        </div>
-                        <p class="text-xs uppercase tracking-widest">Engine (You)</p>
-                    </div>
-                    
-                    <div class="h-12 w-0.5 md:h-0.5 md:w-24 bg-gradient-to-b md:bg-gradient-to-r from-gray-600 to-cyan-500"></div>
-                    
-                    <div class="text-center animate-float">
-                        <div class="w-20 h-20 rounded-full border-2 border-cyan-400 bg-cyan-900/20 flex items-center justify-center mb-4 mx-auto shadow-[0_0_20px_rgba(34,211,238,0.3)]">
-                            <span class="material-symbols-outlined text-cyan-400">smart_toy</span>
-                        </div>
-                        <p class="text-xs uppercase tracking-widest text-cyan-400">Booster (AI)</p>
-                    </div>
-                </div>
-
-                <div class="mt-12 text-left bg-black/50 p-4 border-l-2 border-cyan-500">
-                    <p class="text-sm text-gray-300 leading-relaxed">
-                        <strong class="text-white block mb-1">AIは「外付けの秘書」</strong>
-                        自分の思考（エンジン）が先立つ。AIはその出力を増幅する装置。
-                        ハルシネーションを考慮し、「検証」と「判断」は必ず自分が担う。
-                    </p>
-                </div>
-                
-                <!-- Decor -->
-                <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-cyan-500"></div>
-                <div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-cyan-500"></div>
-                <div class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-cyan-500"></div>
-                <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-cyan-500"></div>
-            </div>
-        </div>
-      </section>
-
-      <!-- ============================================
-           SCENE 5: DESTINATION (実践)
-           Hologram Projections
-      ============================================ -->
-      <section id="scene-dest" class="relative z-20 py-24 px-6 max-w-5xl mx-auto">
-         <h2 class="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-500 mb-12 text-center">Practical Examples</h2>
-
-         <div class="grid md:grid-cols-2 gap-8">
-            <!-- Example 1 -->
-            <div class="group relative bg-[#0a0a0a] border border-white/10 p-1 overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-transparent opacity-50"></div>
-                <div class="p-8 h-full flex flex-col">
-                    <div class="text-[10px] text-indigo-400 uppercase tracking-widest mb-2">Practice.01</div>
-                    <h3 class="text-2xl serif text-white mb-4">Interactive Study</h3>
-                    <div class="flex-grow space-y-4 text-sm text-gray-400">
-                        <p>過去問を解き、間違えた理由をAIと議論する「トップダウン学習」。</p>
-                        <div class="bg-indigo-900/10 p-3 rounded border border-indigo-500/20 text-xs">
-                             「なぜ間違えたか」「どう考えたか」を言語化してAIに渡すことで、対話がそのまま記憶定着のアウトプットになる。
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Example 2 -->
-            <div class="group relative bg-[#0a0a0a] border border-white/10 p-1 overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-transparent opacity-50"></div>
-                 <div class="p-8 h-full flex flex-col">
-                    <div class="text-[10px] text-emerald-400 uppercase tracking-widest mb-2">Practice.02</div>
-                    <h3 class="text-2xl serif text-white mb-4">Idea Sparring</h3>
-                    <div class="flex-grow space-y-4 text-sm text-gray-400">
-                        <p>授業アイデアの「壁打ち」。骨組みを作り、AIに広げさせ、最後は自分で選ぶ。</p>
-                         <div class="bg-emerald-900/10 p-3 rounded border border-emerald-500/20 text-xs">
-                             必ず「自分の思考」を挟むこと。苦手領域の補完や、アイデアの基礎レベルの底上げに使う。
-                        </div>
-                    </div>
-                </div>
-            </div>
-         </div>
-      </section>
-
-      <!-- ============================================
-           SCENE 6: SPACESHIP VIEW (まとめ)
-           Zoom out to structure
-      ============================================ -->
-      <section id="scene-ship" class="relative z-10 h-[80vh] flex items-center justify-center overflow-hidden">
-         <img src={images.ship} class="absolute inset-0 w-full h-full object-cover opacity-20" />
-         <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/50 to-transparent"></div>
-         
-         <div class="relative z-10 text-center max-w-2xl px-6">
-            <h2 class="text-3xl md:text-5xl serif mb-8 text-white">The Conclusion</h2>
-            <div class="bg-black/60 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-sm">
-                <p class="text-lg md:text-xl text-gray-200 leading-relaxed font-light mb-6">
-                    AIは思考を奪うことも、加速することもある。<br/>
-                    決め手は性能ではなく、<span class="text-white font-normal border-b border-emerald-500">あなたの設計</span>だ。
-                </p>
-                <p class="text-sm text-gray-400">
-                    丸投げせず、判断と検証を人間側に残す。<br/>
-                    AIを良き「壁打ち相手」とした時、あなたの思考はむしろ強くなる。
-                </p>
-            </div>
-         </div>
-      </section>
-
-      <!-- ============================================
-           SCENE 7: ENDING (余韻)
-           Stars fade
-      ============================================ -->
-      <section id="scene-end" class="relative h-[50vh] flex flex-col items-center justify-center bg-black">
-         <p class="text-[10px] tracking-[0.5em] uppercase text-gray-600 mb-4">Mission Complete</p>
-         <p class="serif italic text-2xl text-gray-400">Keep thinking.</p>
-         
-         <footer class="absolute bottom-8 text-[10px] text-gray-700 uppercase tracking-widest">
-            &copy; 2025 NoViLholic Music Theory Class
-         </footer>
-      </section>
-
-    </main>
-
-    <!-- Script for Interactions -->
-    <script>
-      // Gate Animation on Scroll
-      const gateSection = document.getElementById('scene-gate');
-      const gateLeft = document.getElementById('gate-left');
-      const gateRight = document.getElementById('gate-right');
-      const gateContent = document.getElementById('gate-content');
-
-      window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
-        const triggerPoint = window.innerHeight * 0.2; // 少しスクロールしたら開く
-        
-        if (scrollY > triggerPoint) {
-            gateLeft.style.transform = 'translateX(-100%)';
-            gateRight.style.transform = 'translateX(100%)';
-            gateContent.style.opacity = '0';
-            // Disable pointer events on gate after opening to allow clicking underneath
-            setTimeout(() => {
-                gateSection.style.pointerEvents = 'none';
-            }, 1000);
-        } else {
-            gateLeft.style.transform = 'translateX(0)';
-            gateRight.style.transform = 'translateX(0)';
-            gateContent.style.opacity = '1';
-            gateSection.style.pointerEvents = 'auto';
-        }
-      });
-
-      // Global Functions for OnClick
-      window.toggleCard = (el) => {
-        // Toggle 'active' class
-        el.classList.toggle('active');
-        // Reset others (optional, keep it simple for now)
-      };
-
-      window.toggleLab = (type) => {
-        const offload = document.getElementById('info-offload');
-        const augment = document.getElementById('info-augment');
-        
-        if (type === 'offload') {
-            offload.classList.toggle('hidden');
-            augment.classList.add('hidden');
-        } else {
-            augment.classList.toggle('hidden');
-            offload.classList.add('hidden');
-        }
-      };
-    </script>
+  <body class="antialiased">
     
-    <!-- Material Symbols -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <!-- 3D Canvas (Fixed Background) 
+         client:only="react" is CRITICAL for WebGL -->
+    <ThreeScene client:only="react" />
+
+    <!-- Scroll Spacer 
+         このdivの高さが、旅の長さ（時間）になります。
+         3D側で scrollY * 0.02 をZ座標にしているので、
+         z=-85 まで行くには 4250px 程度必要 + 余韻分
+    -->
+    <div class="relative z-10 w-full" style="height: 6000px;">
+        <!-- 
+           ここは空っぽでOKです。
+           スクロールバーを出すためだけの存在です。
+           必要であれば、画面端に固定のナビゲーションなどを置けます。
+        -->
+        <div class="fixed bottom-8 left-0 right-0 text-center pointer-events-none mix-blend-difference text-white">
+           <span class="text-[10px] uppercase tracking-widest animate-pulse">
+             Scroll to Explore the Ship
+           </span>
+        </div>
+        
+        <!-- ナビゲーション（右上） -->
+        <nav class="fixed top-6 right-6 z-50">
+             <a href="/music-theory-class-18/lessons/lesson22.html" class="bg-white/10 backdrop-blur border border-white/20 text-white text-[10px] uppercase tracking-widest px-4 py-2 rounded-full hover:bg-white hover:text-black transition-colors">
+            Text Version
+          </a>
+        </nav>
+    </div>
+
   </body>
 </html>
